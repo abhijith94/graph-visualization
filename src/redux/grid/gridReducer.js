@@ -1,5 +1,9 @@
 import GRID_TYPES from "./gridTypes";
-import { createGridUtil, createMazeUtil } from "./gridUtils";
+import {
+  createGridUtil,
+  createMazeUtil,
+  makeCellVisitedUtil,
+} from "./gridUtils";
 
 const INITIAL_STATE = {
   rows: 22,
@@ -13,6 +17,7 @@ const INITIAL_STATE = {
     i: 11,
     j: 35,
   },
+  shouldFindPath: false,
 };
 
 const gridReducer = (state = INITIAL_STATE, action) => {
@@ -27,6 +32,18 @@ const gridReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         gridCells: createMazeUtil(state),
+      };
+
+    case GRID_TYPES.FIND_PATH:
+      return {
+        ...state,
+        shouldFindPath: action.payload,
+      };
+
+    case GRID_TYPES.MARK_CELL_VISITED:
+      return {
+        ...state,
+        gridCells: makeCellVisitedUtil(state, action.payload),
       };
 
     default:

@@ -2,7 +2,7 @@ import FILTER_TYPES from "./filterTypes";
 
 const INITIAL_STATE = {
   algorithms: ["Breadth First Search", "Dijkstra"],
-  currentAlg: null,
+  currentAlg: "Breadth First Search",
 };
 
 const filterReducer = (state = INITIAL_STATE, action) => {

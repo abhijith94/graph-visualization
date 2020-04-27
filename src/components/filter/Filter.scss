@@ -17,7 +17,7 @@
     border: none;
     margin-top: 45px;
 
-    &:hover {
+    &:hover:not(:disabled) {
       opacity: 0.9;
 
       span.squirk {
@@ -27,8 +27,12 @@
     &:focus {
       outline: none;
     }
-    &:active {
+    &:active:not(:disabled) {
       background: url("../../assets/buttons/yellow_button_pressed.png");
+    }
+
+    &:disabled {
+      opacity: 0.5;
     }
   }
 }

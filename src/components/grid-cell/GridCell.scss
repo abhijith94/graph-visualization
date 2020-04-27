@@ -29,4 +29,8 @@
     background: url("../../assets/player/target.png") repeat;
     background-size: contain;
   }
+
+  &.visited {
+    background-color: blue;
+  }
 }

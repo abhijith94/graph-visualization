@@ -1,7 +1,7 @@
 import shortid from "shortid";
 
 export const createGridUtil = (state) => {
-  const { rows, columns } = state;
+  const { rows, columns, playerPos, targetPos } = state;
 
   const gridCells = [];
 
@@ -15,9 +15,12 @@ export const createGridUtil = (state) => {
         isWall: false,
         isPlayer: false,
         isTarget: false,
+        visited: false,
+        shortestPath: false,
       });
     }
   }
+  clearPlayerAndTargetWalls(playerPos, targetPos, gridCells);
 
   return gridCells;
 };
@@ -41,6 +44,12 @@ export const createMazeUtil = (state) => {
   recursiveDivision(gridCells, 0, rows - 2, 0, columns - 2);
   clearPlayerAndTargetWalls(playerPos, targetPos, gridCells);
 
+  return gridCells;
+};
+
+export const makeCellVisitedUtil = (state, { i, j }) => {
+  const gridCells = [...state.gridCells];
+  gridCells[i][j].visited = true;
   return gridCells;
 };
 
