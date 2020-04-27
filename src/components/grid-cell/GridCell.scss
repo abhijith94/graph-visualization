@@ -1,0 +1,31 @@
+.grid-cell {
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  box-sizing: border-box;
+
+  &.floor {
+    background: url("../../assets/tiles/path_grey.png") repeat;
+    background-size: contain;
+
+    &:hover {
+      border: 1px solid rgba(255, 255, 255, 1);
+      cursor: pointer;
+    }
+  }
+
+  &.wall {
+    background: url("../../assets/tiles/wall_red.png") repeat;
+    background-size: contain;
+  }
+
+  &.player {
+    background: url("../../assets/player/arrow.png") repeat;
+    background-size: contain;
+  }
+
+  &.target {
+    background: url("../../assets/player/target.png") repeat;
+    background-size: contain;
+  }
+}
