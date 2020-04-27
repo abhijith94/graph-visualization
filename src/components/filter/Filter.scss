@@ -1,0 +1,34 @@
+.filter {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  select {
+    width: 200px;
+  }
+
+  .visualize-btn {
+    background: url("../../assets/buttons/yellow_button_normal.png");
+    width: 190px;
+    height: 49px;
+    border: none;
+    margin-top: 45px;
+
+    &:hover {
+      opacity: 0.9;
+
+      span.squirk {
+        color: rgb(100, 98, 98);
+      }
+    }
+    &:focus {
+      outline: none;
+    }
+    &:active {
+      background: url("../../assets/buttons/yellow_button_pressed.png");
+    }
+  }
+}

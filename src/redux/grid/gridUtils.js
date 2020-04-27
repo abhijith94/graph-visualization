@@ -1,3 +1,5 @@
+import shortid from "shortid";
+
 export const createGridUtil = (state) => {
   const { rows, columns } = state;
 
@@ -7,6 +9,7 @@ export const createGridUtil = (state) => {
     gridCells.push([]);
     for (let j = 0; j < columns; j++) {
       gridCells[i].push({
+        id: shortid(),
         i,
         j,
         isWall: false,

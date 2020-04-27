@@ -1,22 +1,19 @@
 class Stack {
   constructor() {
     this.arr = [];
-    this.size = this.arr.length;
   }
 
   push(data) {
     try {
       this.arr.push(data);
-      this.size++;
     } catch (error) {
       throw new Error(error);
     }
   }
 
   pop() {
-    if (this.size > 0) {
+    if (this.arr.length > 0) {
       let data = this.arr.pop();
-      this.size--;
       return data;
     } else {
       throw new Error("Stack is empty");
@@ -24,11 +21,11 @@ class Stack {
   }
 
   isEmpty() {
-    return this.size === 0;
+    return this.arr.length === 0;
   }
 
   size() {
-    return this.size;
+    return this.arr.length;
   }
 }
 

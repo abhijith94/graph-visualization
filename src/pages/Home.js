@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { createGrid, createMaze } from "../redux/grid/gridActions";
 import Grid from "../components/grid/Grid";
 import "./Home.scss";
+import Filter from "../components/filter/Filter";
 
 class Home extends Component {
   render() {
@@ -33,7 +34,9 @@ class Home extends Component {
         </div>
         <div className="middle"></div>
         <div className="bottom">
-          <div className="filter-container"></div>
+          <div className="filter-container">
+            <Filter></Filter>
+          </div>
           <div className="grid-container">
             <Grid></Grid>
           </div>

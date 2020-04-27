@@ -80,9 +80,8 @@
     left: 0;
     display: flex;
     justify-content: space-between;
-    align-items: center;
     .filter-container {
-      height: 90%;
+      height: 40%;
       width: 20%;
       border: 5px solid white;
       border-radius: 40px;
@@ -93,7 +92,6 @@
       position: relative;
       display: flex;
       justify-content: center;
-      align-items: center;
     }
 
     .grid-container {

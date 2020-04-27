@@ -3,13 +3,14 @@
   height: 30px;
   margin: 0;
   box-sizing: border-box;
+  border: none !important;
 
   &.floor {
     background: url("../../assets/tiles/path_grey.png") repeat;
     background-size: contain;
 
     &:hover {
-      border: 1px solid rgba(255, 255, 255, 1);
+      border: 1px solid rgba(255, 255, 255, 1) !important;
       cursor: pointer;
     }
   }
