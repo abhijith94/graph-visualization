@@ -2,10 +2,15 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { createGrid, createMaze } from "../redux/grid/gridActions";
 import Grid from "../components/grid/Grid";
-import "./Home.scss";
 import Filter from "../components/filter/Filter";
+import "./Home.scss";
 
 class Home extends Component {
+
+  componentDidMount(){
+    
+  }
+
   render() {
     const { createGrid, createMaze } = this.props;
 

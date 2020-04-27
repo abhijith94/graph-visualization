@@ -4,8 +4,11 @@ import GridCell from "../grid-cell/GridCell";
 import Graph from "../../utils/Graph";
 import Queue from "../../utils/Queue";
 import Node from "../../utils/Node";
+import {
+  markCellVisited,
+  markShortestPath,
+} from "../../redux/grid/gridActions";
 import "./Grid.scss";
-import { markCellVisited } from "../../redux/grid/gridActions";
 
 class Grid extends Component {
   state = {
@@ -20,12 +23,13 @@ class Grid extends Component {
       targetPos,
       currentAlg,
       markVisited,
+      markSP,
     } = this.props;
     if (shouldFindPath && !this.state.routing) {
       this.setState({ routing: true }, () => {
         switch (currentAlg) {
           case "Breadth First Search":
-            this.bfs(gridCells, playerPos, targetPos, markVisited);
+            this.bfs(gridCells, playerPos, targetPos, markVisited, markSP);
             break;
 
           default:
@@ -35,7 +39,7 @@ class Grid extends Component {
     }
   }
 
-  bfs = async (gridCells, playerPos, targetPos, markVisited) => {
+  bfs = async (gridCells, playerPos, targetPos, markVisited, markSP) => {
     let { graph, cellIdPositionMap } = this.initializeGraph(gridCells);
     let playerId = gridCells[playerPos.i][playerPos.j].id;
     let targetId = gridCells[targetPos.i][targetPos.j].id;
@@ -77,9 +81,14 @@ class Grid extends Component {
     }
 
     if (targetFound) {
+      this.drawShortestPath(
+        parent,
+        playerId,
+        targetId,
+        cellIdPositionMap,
+        markSP
+      );
     }
-
-    console.log(graph, targetFound);
   };
 
   initializeGraph(gridCells) {
@@ -127,6 +136,23 @@ class Grid extends Component {
     return { graph, cellIdPositionMap };
   }
 
+  drawShortestPath = async (
+    parent,
+    playerId,
+    targetId,
+    cellIdPositionMap,
+    markSP
+  ) => {
+    let temp = targetId;
+    while (temp !== playerId) {
+      let parentId = parent.get(temp);
+      let { i, j } = cellIdPositionMap.get(parentId);
+      markSP(i, j);
+      await this.wait(10);
+      temp = parentId;
+    }
+  };
+
   wait = (microsecs) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => resolve(), microsecs);
@@ -164,6 +190,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   markVisited: (i, j) => dispatch(markCellVisited(i, j)),
+  markSP: (i, j) => dispatch(markShortestPath(i, j)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid);

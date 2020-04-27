@@ -20,6 +20,9 @@ export const createGridUtil = (state) => {
       });
     }
   }
+
+  gridCells[playerPos.i][playerPos.j].isPlayer = true;
+  gridCells[targetPos.i][targetPos.j].isTarget = true;
   clearPlayerAndTargetWalls(playerPos, targetPos, gridCells);
 
   return gridCells;
@@ -50,6 +53,13 @@ export const createMazeUtil = (state) => {
 export const makeCellVisitedUtil = (state, { i, j }) => {
   const gridCells = [...state.gridCells];
   gridCells[i][j].visited = true;
+  return gridCells;
+};
+
+export const makeCellSPUtil = (state, { i, j }) => {
+  const gridCells = [...state.gridCells];
+  gridCells[i][j].shortestPath = true;
+  gridCells[i][j].visited = false;
   return gridCells;
 };
 

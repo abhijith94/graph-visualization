@@ -20,3 +20,11 @@ export const markCellVisited = (i, j) => ({
     j,
   },
 });
+
+export const markShortestPath = (i, j) => ({
+  type: GRID_TYPES.MARK_SHORTEST_PATH,
+  payload: {
+    i,
+    j,
+  },
+});

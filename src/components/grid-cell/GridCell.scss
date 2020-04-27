@@ -31,6 +31,70 @@
   }
 
   &.visited {
-    background-color: blue;
+    opacity: 1;
+    animation-name: visited;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(175, 216, 248);
+    border-image: initial;
+  }
+
+  &.shortest-path {
+    opacity: 1;
+    animation-name: shortest-path;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(162, 167, 95);
+    border-image: initial;
+  }
+
+  @keyframes visited {
+    0% {
+      transform: scale(0.3);
+      background-color: rgb(32, 32, 32);
+      border-radius: 100%;
+    }
+    50% {
+      background-color: rgb(0, 190, 218);
+    }
+    75% {
+      transform: scale(1.2);
+      background-color: rgb(51, 53, 145);
+    }
+    100% {
+      transform: scale(1);
+      background-color: rgb(67, 54, 179);
+    }
+  }
+
+  @keyframes shortest-path {
+    0% {
+      transform: scale(0.3);
+      background-color: rgb(32, 32, 32);
+      border-radius: 100%;
+    }
+    50% {
+      background-color: rgb(0, 218, 47);
+    }
+    75% {
+      transform: scale(1.2);
+      background-color: rgb(101, 145, 51);
+    }
+    100% {
+      transform: scale(1);
+      background-color: rgb(233, 230, 79);
+    }
   }
 }

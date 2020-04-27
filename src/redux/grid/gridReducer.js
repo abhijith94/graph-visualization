@@ -3,6 +3,7 @@ import {
   createGridUtil,
   createMazeUtil,
   makeCellVisitedUtil,
+  makeCellSPUtil,
 } from "./gridUtils";
 
 const INITIAL_STATE = {
@@ -44,6 +45,12 @@ const gridReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         gridCells: makeCellVisitedUtil(state, action.payload),
+      };
+
+    case GRID_TYPES.MARK_SHORTEST_PATH:
+      return {
+        ...state,
+        gridCells: makeCellSPUtil(state, action.payload),
       };
 
     default:
