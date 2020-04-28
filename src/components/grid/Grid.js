@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import GridCell from "../grid-cell/GridCell";
 import Graph from "../../utils/Graph";
 import Queue from "../../utils/Queue";
+import Stack from "../../utils/Stack";
 import Node from "../../utils/Node";
 import {
   markCellVisited,
@@ -39,6 +40,17 @@ class Grid extends Component {
         switch (currentAlg) {
           case "Breadth First Search":
             this.bfs(
+              gridCells,
+              playerPos,
+              targetPos,
+              markVisited,
+              markSP,
+              findPath
+            );
+            break;
+
+          case "Depth First Search":
+            this.dfs(
               gridCells,
               playerPos,
               targetPos,
@@ -94,6 +106,68 @@ class Grid extends Component {
 
           visited.add(temp.id);
           queue.enquque(temp);
+        }
+        temp = temp.next;
+      }
+
+      if (targetFound) {
+        break;
+      }
+    }
+
+    if (targetFound) {
+      this.drawShortestPath(
+        parent,
+        playerId,
+        targetId,
+        cellIdPositionMap,
+        markSP
+      );
+    }
+
+    findPath();
+    this.setState({ routing: false });
+  };
+
+  dfs = async (
+    gridCells,
+    playerPos,
+    targetPos,
+    markVisited,
+    markSP,
+    findPath
+  ) => {
+    let { graph, cellIdPositionMap } = this.initializeGraph(gridCells);
+    let playerId = gridCells[playerPos.i][playerPos.j].id;
+    let targetId = gridCells[targetPos.i][targetPos.j].id;
+
+    let visited = new Set();
+    let stack = new Stack();
+
+    stack.push(new Node(playerId));
+    visited.add(playerId);
+
+    let targetFound = false;
+    let parent = new Map();
+
+    while (!stack.isEmpty()) {
+      let node = stack.pop();
+      let { i, j } = cellIdPositionMap.get(node.id);
+      markVisited(i, j);
+      await this.wait(5);
+
+      let temp = graph.adjList.get(node.id).head;
+      while (temp !== null) {
+        if (!visited.has(temp.id)) {
+          parent.set(temp.id, node.id);
+
+          if (temp.id === targetId) {
+            targetFound = true;
+            break;
+          }
+
+          visited.add(temp.id);
+          stack.push(temp);
         }
         temp = temp.next;
       }

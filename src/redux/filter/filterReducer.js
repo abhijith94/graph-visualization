@@ -1,7 +1,7 @@
 import FILTER_TYPES from "./filterTypes";
 
 const INITIAL_STATE = {
-  algorithms: ["Breadth First Search", "Dijkstra"],
+  algorithms: ["Breadth First Search", "Depth First Search", "Dijkstra"],
   currentAlg: "Breadth First Search",
 };
 
