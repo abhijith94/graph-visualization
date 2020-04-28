@@ -5,6 +5,7 @@ import Graph from "../../utils/Graph";
 import Queue from "../../utils/Queue";
 import Stack from "../../utils/Stack";
 import Node from "../../utils/Node";
+import PriorityQueue from "../../utils/PriorityQueue";
 import {
   markCellVisited,
   markShortestPath,
@@ -51,6 +52,17 @@ class Grid extends Component {
 
           case "Depth First Search":
             this.dfs(
+              gridCells,
+              playerPos,
+              targetPos,
+              markVisited,
+              markSP,
+              findPath
+            );
+            break;
+
+          case "Dijkstra":
+            this.dijkstra(
               gridCells,
               playerPos,
               targetPos,
@@ -191,6 +203,73 @@ class Grid extends Component {
     this.setState({ routing: false });
   };
 
+  dijkstra = async (
+    gridCells,
+    playerPos,
+    targetPos,
+    markVisited,
+    markSP,
+    findPath
+  ) => {
+    let { graph, cellIdPositionMap } = this.initializeGraph(gridCells);
+    let playerId = gridCells[playerPos.i][playerPos.j].id;
+    let targetId = gridCells[targetPos.i][targetPos.j].id;
+
+    let parent = new Map();
+    let shortestDistance = new Map();
+
+    let pq = new PriorityQueue();
+
+    for (let i = 0; i < gridCells.length; i++) {
+      for (let j = 0; j < gridCells[i].length; j++) {
+        if (!gridCells[i][j].isWall) {
+          pq.enqeue(new Node(gridCells[i][j].id, Infinity, i, j));
+        }
+      }
+    }
+
+    let targetFound = false;
+    pq.decreaseKey(playerId, 0);
+
+    while (!pq.isEmpty()) {
+      let current = pq.dequeue();
+
+      if (current.id === playerId) {
+        shortestDistance.set(playerId, 0);
+      } else {
+        shortestDistance.set(current.id, current.weight);
+      }
+
+      let head = graph.adjList.get(current.id).head; //neighbours
+
+      while (head !== null) {
+        let totalWeight = shortestDistance.get(current.id) + head.weight;
+
+        if (pq.containsKey(head.id) && pq.peek(head.id).weight > totalWeight) {
+          pq.decreaseKey(head.id, totalWeight);
+          parent.set(head.id, current.id);
+
+          let { i, j } = cellIdPositionMap.get(head.id);
+          markVisited(i, j);
+          await this.wait(0);
+        }
+
+        head = head.next;
+      }
+    }
+
+    this.drawShortestPath(
+      parent,
+      playerId,
+      targetId,
+      cellIdPositionMap,
+      markSP
+    );
+
+    findPath();
+    this.setState({ routing: false });
+  };
+
   initializeGraph(gridCells) {
     let graph = new Graph();
     let cellIdPositionMap = new Map();
@@ -206,28 +285,32 @@ class Grid extends Component {
           if (i - 1 >= 0 && !gridCells[i - 1][j].isWall) {
             graph.addPathBetweenVertices(
               gridCells[i][j].id,
-              gridCells[i - 1][j].id
+              gridCells[i - 1][j].id,
+              gridCells[i - 1][j].weight
             );
           }
           //right
           if (j + 1 <= gridCells[i].length - 1 && !gridCells[i][j + 1].isWall) {
             graph.addPathBetweenVertices(
               gridCells[i][j].id,
-              gridCells[i][j + 1].id
+              gridCells[i][j + 1].id,
+              gridCells[i][j + 1].weight
             );
           }
           //bottom
           if (i + 1 <= gridCells.length - 1 && !gridCells[i + 1][j].isWall) {
             graph.addPathBetweenVertices(
               gridCells[i][j].id,
-              gridCells[i + 1][j].id
+              gridCells[i + 1][j].id,
+              gridCells[i + 1][j].weight
             );
           }
           //left
           if (j - 1 >= 0 && !gridCells[i][j - 1].isWall) {
             graph.addPathBetweenVertices(
               gridCells[i][j].id,
-              gridCells[i][j - 1].id
+              gridCells[i][j - 1].id,
+              gridCells[i][j - 1].weight
             );
           }
         }
@@ -244,8 +327,10 @@ class Grid extends Component {
     markSP
   ) => {
     let temp = targetId;
+    console.log(playerId);
     while (temp !== playerId) {
       let parentId = parent.get(temp);
+
       let { i, j } = cellIdPositionMap.get(parentId);
       markSP(i, j);
       await this.wait(10);

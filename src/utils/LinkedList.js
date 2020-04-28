@@ -5,9 +5,9 @@ class LinkedList {
     this.head = null;
   }
 
-  addNodeToList(id) {
+  addNodeToList(id, weight = 0) {
     if (!this.checkIfNodeAlreadyExists(this.head, id)) {
-      let newNode = new Node(id);
+      let newNode = new Node(id, weight);
       newNode.next = this.head;
       this.head = newNode;
     } else {

@@ -18,6 +18,7 @@ export const createGridUtil = (state) => {
         visited: false,
         shortestPath: false,
         mazeActive: false,
+        weight: 1,
       });
     }
   }

@@ -16,7 +16,7 @@ const INITIAL_STATE = {
     j: 3,
   },
   targetPos: {
-    i: 11,
+    i: 5,
     j: 35,
   },
   enableVisualizeButton: true,
