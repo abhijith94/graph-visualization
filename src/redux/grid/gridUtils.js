@@ -17,6 +17,7 @@ export const createGridUtil = (state) => {
         isTarget: false,
         visited: false,
         shortestPath: false,
+        mazeActive: false,
       });
     }
   }
@@ -25,7 +26,7 @@ export const createGridUtil = (state) => {
   gridCells[targetPos.i][targetPos.j].isTarget = true;
   clearPlayerAndTargetWalls(playerPos, targetPos, gridCells);
 
-  return gridCells;
+  return { gridCells, enableVisualizeButton: true };
 };
 
 export const createMazeUtil = (state) => {
@@ -35,6 +36,8 @@ export const createMazeUtil = (state) => {
   //convert edges to walls
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < columns; j++) {
+      gridCells[i][j].mazeActive = true;
+
       if (i === 0 || j === 0 || i === rows - 1 || j === columns - 1) {
         gridCells[i][j].isWall = true;
       }
@@ -47,7 +50,7 @@ export const createMazeUtil = (state) => {
   recursiveDivision(gridCells, 0, rows - 2, 0, columns - 2);
   clearPlayerAndTargetWalls(playerPos, targetPos, gridCells);
 
-  return gridCells;
+  return { gridCells, enableVisualizeButton: true };
 };
 
 export const makeCellVisitedUtil = (state, { i, j }) => {
@@ -60,6 +63,18 @@ export const makeCellSPUtil = (state, { i, j }) => {
   const gridCells = [...state.gridCells];
   gridCells[i][j].shortestPath = true;
   gridCells[i][j].visited = false;
+  return gridCells;
+};
+
+export const resetVisitedAndSPUtil = (state) => {
+  const gridCells = [...state.gridCells];
+
+  for (let i = 0; i < gridCells.length; i++) {
+    for (let j = 0; j < gridCells[i].length; j++) {
+      gridCells[i][j].shortestPath = false;
+      gridCells[i][j].visited = false;
+    }
+  }
   return gridCells;
 };
 

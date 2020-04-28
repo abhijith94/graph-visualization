@@ -2,7 +2,14 @@ import React from "react";
 import "./GridCell.scss";
 
 const GridCell = (props) => {
-  const { isWall, isPlayer, isTarget, visited, shortestPath } = props;
+  const {
+    isWall,
+    isPlayer,
+    isTarget,
+    visited,
+    shortestPath,
+    mazeActive,
+  } = props;
 
   let tileClass = [];
   if (isWall) {
@@ -19,7 +26,11 @@ const GridCell = (props) => {
     tileClass = "floor";
   }
 
-  return <td className={`${tileClass} grid-cell`}></td>;
+  return (
+    <td
+      className={`${tileClass} ${!mazeActive ? "grid-border" : ""} grid-cell`}
+    ></td>
+  );
 };
 
 export default GridCell;

@@ -1,12 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { chooseAlg } from "../../redux/filter/filterActions";
-import { findPath } from "../../redux/grid/gridActions";
+import { findPath, resetVisitedAndSP } from "../../redux/grid/gridActions";
 import "./Filter.scss";
 
 export class Filter extends Component {
   render() {
-    const { algorithms, chooseAlg, shouldFindPath, findPath } = this.props;
+    const {
+      algorithms,
+      chooseAlg,
+      enableVisualizeButton,
+      findPath,
+      resetVisitedAndSPCells,
+    } = this.props;
 
     return (
       <div className="filter">
@@ -23,8 +29,9 @@ export class Filter extends Component {
         </select>
         <button
           className="visualize-btn"
-          disabled={shouldFindPath}
+          disabled={!enableVisualizeButton}
           onClick={() => {
+            resetVisitedAndSPCells();
             findPath();
           }}
         >
@@ -38,12 +45,13 @@ export class Filter extends Component {
 const mapStateToProps = (state) => ({
   algorithms: state.filter.algorithms,
   currentAlg: state.filter.currentAlg,
-  shouldFindPath: state.grid.shouldFindPath,
+  enableVisualizeButton: state.grid.enableVisualizeButton,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   chooseAlg: (alg) => dispatch(chooseAlg(alg)),
-  findPath: () => dispatch(findPath(true)),
+  findPath: () => dispatch(findPath(false)),
+  resetVisitedAndSPCells: () => dispatch(resetVisitedAndSP()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

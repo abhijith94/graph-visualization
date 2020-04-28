@@ -3,7 +3,10 @@
   height: 30px;
   margin: 0;
   box-sizing: border-box;
-  border: none !important;
+
+  &.grid-border {
+    border: 1px solid rgba(136, 136, 136, 0.2) !important;
+  }
 
   &.floor {
     background: url("../../assets/tiles/path_grey.png") repeat;
@@ -39,10 +42,6 @@
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
     animation-play-state: running;
-    border-width: 1px;
-    border-style: solid;
-    border-color: rgb(175, 216, 248);
-    border-image: initial;
   }
 
   &.shortest-path {
@@ -54,10 +53,6 @@
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
     animation-play-state: running;
-    border-width: 1px;
-    border-style: solid;
-    border-color: rgb(162, 167, 95);
-    border-image: initial;
   }
 
   @keyframes visited {

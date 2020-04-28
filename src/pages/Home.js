@@ -6,13 +6,10 @@ import Filter from "../components/filter/Filter";
 import "./Home.scss";
 
 class Home extends Component {
-
-  componentDidMount(){
-    
-  }
+  componentDidMount() {}
 
   render() {
-    const { createGrid, createMaze } = this.props;
+    const { createGrid, createMaze, enableVisualizeButton } = this.props;
 
     return (
       <div className="home">
@@ -20,21 +17,30 @@ class Home extends Component {
           <div>
             <h1 className="title">Graph Visualizer</h1>
           </div>
-          <div>
-            <button className="create-grid" onClick={createGrid}>
-              <span className="squirk">Create Grid</span>
-            </button>
-          </div>
-          <div>
-            <button
-              className="create-maze"
-              onClick={() => {
-                createGrid();
-                createMaze();
-              }}
-            >
-              <span className="squirk">Create Maze</span>
-            </button>
+          <div className="top-button-container">
+            <div>
+              <button
+                disabled={!enableVisualizeButton}
+                className="create-maze"
+                onClick={() => {
+                  createGrid();
+                  createMaze();
+                }}
+              >
+                <span className="squirk">Create Maze</span>
+              </button>
+            </div>
+            <div>
+              <button
+                disabled={!enableVisualizeButton}
+                className="clear-board"
+                onClick={() => {
+                  createGrid();
+                }}
+              >
+                <span className="squirk">Clear Board</span>
+              </button>
+            </div>
           </div>
         </div>
         <div className="middle"></div>
@@ -51,9 +57,13 @@ class Home extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  enableVisualizeButton: state.grid.enableVisualizeButton,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   createGrid: () => dispatch(createGrid()),
   createMaze: () => dispatch(createMaze()),
 });
 
-export default connect(null, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

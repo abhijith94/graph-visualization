@@ -4,6 +4,7 @@ import {
   createMazeUtil,
   makeCellVisitedUtil,
   makeCellSPUtil,
+  resetVisitedAndSPUtil,
 } from "./gridUtils";
 
 const INITIAL_STATE = {
@@ -18,27 +19,33 @@ const INITIAL_STATE = {
     i: 11,
     j: 35,
   },
-  shouldFindPath: false,
+  enableVisualizeButton: true,
+  mazeActive: false,
 };
 
 const gridReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case GRID_TYPES.CREATE_GRID:
+    case GRID_TYPES.CREATE_GRID: {
+      const { enableVisualizeButton, gridCells } = createGridUtil(state);
       return {
         ...state,
-        gridCells: createGridUtil(state),
+        gridCells,
+        enableVisualizeButton,
       };
+    }
 
-    case GRID_TYPES.CREATE_MAZE:
+    case GRID_TYPES.CREATE_MAZE: {
+      const { enableVisualizeButton, gridCells } = createMazeUtil(state);
       return {
         ...state,
-        gridCells: createMazeUtil(state),
+        gridCells,
+        enableVisualizeButton,
       };
-
+    }
     case GRID_TYPES.FIND_PATH:
       return {
         ...state,
-        shouldFindPath: action.payload,
+        enableVisualizeButton: action.payload,
       };
 
     case GRID_TYPES.MARK_CELL_VISITED:
@@ -51,6 +58,12 @@ const gridReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         gridCells: makeCellSPUtil(state, action.payload),
+      };
+
+    case GRID_TYPES.RESET_VISITED_AND_SP:
+      return {
+        ...state,
+        gridCells: resetVisitedAndSPUtil(state),
       };
 
     default:

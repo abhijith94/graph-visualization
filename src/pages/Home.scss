@@ -14,7 +14,7 @@
     top: 0;
     left: 0;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
 
     .title {
@@ -22,23 +22,14 @@
       padding: 0 20px;
       text-decoration: underline;
       text-decoration-style: dashed;
+      flex-grow: 2;
     }
 
-    .create-grid {
-      background: url("../assets/buttons/green_button_normal.png");
-      width: 190px;
-      height: 49px;
-      border: none;
-
-      &:hover {
-        opacity: 0.9;
-      }
-      &:focus {
-        outline: none;
-      }
-      &:active {
-        background: url("../assets/buttons/green_button_pressed.png");
-      }
+    .top-button-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-grow: 1;
     }
 
     .create-maze {
@@ -47,6 +38,7 @@
       width: 190px;
       height: 49px;
       border: none;
+      margin: 0 30px;
 
       &:hover {
         opacity: 0.9;
@@ -56,6 +48,33 @@
       }
       &:active {
         background: url("../assets/buttons/blue_button_pressed.png");
+      }
+      &:disabled {
+        pointer-events: none;
+        opacity: 0.5;
+      }
+    }
+
+    .clear-board {
+      background: url("../assets/buttons/red_button_normal.png");
+      margin-right: 20px;
+      width: fit-content;
+      height: 49px;
+      border: none;
+      margin: 0 30px;
+
+      &:hover {
+        opacity: 0.9;
+      }
+      &:focus {
+        outline: none;
+      }
+      &:active {
+        background: url("../assets/buttons/red_button_pressed.png");
+      }
+      &:disabled {
+        pointer-events: none;
+        opacity: 0.5;
       }
     }
   }

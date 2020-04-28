@@ -28,3 +28,7 @@ export const markShortestPath = (i, j) => ({
     j,
   },
 });
+
+export const resetVisitedAndSP = (i, j) => ({
+  type: GRID_TYPES.RESET_VISITED_AND_SP,
+});

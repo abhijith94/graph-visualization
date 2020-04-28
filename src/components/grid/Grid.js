@@ -7,6 +7,8 @@ import Node from "../../utils/Node";
 import {
   markCellVisited,
   markShortestPath,
+  findPath,
+  createGrid,
 } from "../../redux/grid/gridActions";
 import "./Grid.scss";
 
@@ -15,21 +17,35 @@ class Grid extends Component {
     routing: false,
   };
 
+  componentDidMount() {
+    const { buildGrid } = this.props;
+    buildGrid();
+  }
+
   componentDidUpdate() {
     const {
-      shouldFindPath,
+      enableVisualizeButton,
       gridCells,
       playerPos,
       targetPos,
       currentAlg,
       markVisited,
       markSP,
+      findPath,
     } = this.props;
-    if (shouldFindPath && !this.state.routing) {
+
+    if (!enableVisualizeButton && !this.state.routing) {
       this.setState({ routing: true }, () => {
         switch (currentAlg) {
           case "Breadth First Search":
-            this.bfs(gridCells, playerPos, targetPos, markVisited, markSP);
+            this.bfs(
+              gridCells,
+              playerPos,
+              targetPos,
+              markVisited,
+              markSP,
+              findPath
+            );
             break;
 
           default:
@@ -39,7 +55,14 @@ class Grid extends Component {
     }
   }
 
-  bfs = async (gridCells, playerPos, targetPos, markVisited, markSP) => {
+  bfs = async (
+    gridCells,
+    playerPos,
+    targetPos,
+    markVisited,
+    markSP,
+    findPath
+  ) => {
     let { graph, cellIdPositionMap } = this.initializeGraph(gridCells);
     let playerId = gridCells[playerPos.i][playerPos.j].id;
     let targetId = gridCells[targetPos.i][targetPos.j].id;
@@ -89,6 +112,9 @@ class Grid extends Component {
         markSP
       );
     }
+
+    findPath();
+    this.setState({ routing: false });
   };
 
   initializeGraph(gridCells) {
@@ -184,13 +210,15 @@ const mapStateToProps = (state) => ({
   columns: state.grid.columns,
   playerPos: state.grid.playerPos,
   targetPos: state.grid.targetPos,
-  shouldFindPath: state.grid.shouldFindPath,
+  enableVisualizeButton: state.grid.enableVisualizeButton,
   currentAlg: state.filter.currentAlg,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  buildGrid: () => dispatch(createGrid()),
   markVisited: (i, j) => dispatch(markCellVisited(i, j)),
   markSP: (i, j) => dispatch(markShortestPath(i, j)),
+  findPath: () => dispatch(findPath(true)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid);
