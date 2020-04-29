@@ -49,3 +49,12 @@ export const cellClicked = (i, j) => ({
     j,
   },
 });
+
+export const dragDrop = (i, j, type) => ({
+  type: GRID_TYPES.DRAG_DROP,
+  payload: {
+    i,
+    j,
+    type,
+  },
+});

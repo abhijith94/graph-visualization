@@ -82,7 +82,7 @@ class PriorityQueue {
   decreaseKey(id, val) {
     if (this.containsKey(id)) {
       this.arr[this.indexMap.get(id)].weight = val;
-      if (this.arr[this.indexMap.get(id)].i == 21) {
+      if (this.arr[this.indexMap.get(id)].i === 21) {
         console.log("found");
       }
       this.buildMinHeap();

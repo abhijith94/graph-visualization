@@ -13,6 +13,7 @@ import {
   createGrid,
   wKeyPress,
   cellClicked,
+  dragDrop,
 } from "../../redux/grid/gridActions";
 import "./Grid.scss";
 
@@ -366,7 +367,7 @@ class Grid extends Component {
   };
 
   render() {
-    const { gridCells, wKeyPressed, cellClick } = this.props;
+    const { gridCells, wKeyPressed, cellClick, dragNDrop } = this.props;
 
     return (
       <table className="table">
@@ -379,6 +380,7 @@ class Grid extends Component {
                   {...col}
                   wKeyPressed={wKeyPressed}
                   onCellClicked={cellClick}
+                  onDragDrop={dragNDrop}
                 ></GridCell>
               ))}
             </tr>
@@ -406,6 +408,7 @@ const mapDispatchToProps = (dispatch) => ({
   findPath: () => dispatch(findPath(true)),
   wKeyPressed: (pressed) => dispatch(wKeyPress(pressed)),
   cellClick: (i, j) => dispatch(cellClicked(i, j)),
+  dragNDrop: (i, j, type) => dispatch(dragDrop(i, j, type)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid);

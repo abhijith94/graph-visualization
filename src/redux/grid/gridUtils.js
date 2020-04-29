@@ -20,12 +20,17 @@ export const createGridUtil = (state) => {
         shortestPath: false,
         mazeActive: false,
         weight: 1,
+        draggable: false,
       });
     }
   }
 
   gridCells[playerPos.i][playerPos.j].isPlayer = true;
+  gridCells[playerPos.i][playerPos.j].draggable = true;
+
   gridCells[targetPos.i][targetPos.j].isTarget = true;
+  gridCells[targetPos.i][targetPos.j].draggable = true;
+
   clearPlayerAndTargetWalls(playerPos, targetPos, gridCells);
 
   return { gridCells, enableVisualizeButton: true };
@@ -126,11 +131,43 @@ export const onCellClickUtil = (state, { i, j }) => {
   } else if (gridCells[i][j].isWeight === true) {
     gridCells[i][j].isWeight = false;
     gridCells[i][j].weight = 1;
-  } else {
+  } else if (
+    gridCells[i][j].isPlayer === false &&
+    gridCells[i][j].isTarget === false
+  ) {
     gridCells[i][j].isWall = true;
   }
 
   return gridCells;
+};
+
+export const onDragDropUtil = (state, { i, j, type }) => {
+  const gridCells = [...state.gridCells];
+  const { playerPos, targetPos, enableVisualizeButton } = state;
+
+  if (enableVisualizeButton) {
+    gridCells[i][j].isWall = false;
+    gridCells[i][j].isWeight = false;
+    gridCells[i][j].weight = 1;
+
+    if (type === "player") {
+      gridCells[i][j].isPlayer = true;
+      gridCells[i][j].draggable = true;
+      gridCells[playerPos.i][playerPos.j].isPlayer = false;
+      gridCells[playerPos.i][playerPos.j].draggable = false;
+      playerPos.i = i;
+      playerPos.j = j;
+    } else if (type === "target") {
+      gridCells[i][j].isTarget = true;
+      gridCells[i][j].draggable = true;
+      gridCells[targetPos.i][targetPos.j].isTarget = false;
+      gridCells[targetPos.i][targetPos.j].draggable = false;
+      targetPos.i = i;
+      targetPos.j = j;
+    }
+  }
+
+  return { playerPos, targetPos, gridCells };
 };
 
 function recursiveDivision(gridCells, minI, maxI, minJ, maxJ) {

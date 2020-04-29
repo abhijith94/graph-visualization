@@ -12,6 +12,8 @@ const GridCell = (props) => {
     mazeActive,
     i,
     j,
+    draggable,
+    onDragDrop,
   } = props;
 
   let tileClass = [];
@@ -35,12 +37,72 @@ const GridCell = (props) => {
     tileClass = "floor";
   }
 
-  return (
-    <td
-      className={`${tileClass} ${!mazeActive ? "grid-border" : ""} grid-cell`}
-      onClick={() => props.onCellClicked(i, j)}
-    ></td>
-  );
+  const dragStart = (e) => {
+    if (e.target.getAttribute("data-isplayer") === "true") {
+      e.dataTransfer.setData("isplayer", "true");
+    } else if (e.target.getAttribute("data-istarget") === "true") {
+      e.dataTransfer.setData("istarget", "true");
+    }
+  };
+
+  const dragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const dragEnter = (e) => {
+    e.preventDefault();
+    e.target.style.background = "rgba(113, 235, 52, 0.5)";
+  };
+
+  const dragLeave = (e) => {
+    e.target.style.background = null;
+  };
+
+  const dragDrop = (e) => {
+    e.target.style.background = null;
+
+    let i = e.target.getAttribute("data-i");
+    let j = e.target.getAttribute("data-j");
+    let type = "";
+
+    if (e.dataTransfer.getData("isplayer") === "true") {
+      type = "player";
+      e.target.setAttribute("data-isplayer", "true");
+    } else if (e.dataTransfer.getData("istarget") === "true") {
+      type = "target";
+      e.target.setAttribute("data-istarget", "true");
+    }
+
+    onDragDrop(i, j, type);
+  };
+
+  if (draggable) {
+    return (
+      <td
+        className={`${tileClass} ${!mazeActive ? "grid-border" : ""} grid-cell`}
+        data-i={i}
+        data-j={j}
+        data-isplayer={isPlayer}
+        data-istarget={isTarget}
+        onClick={() => props.onCellClicked(i, j)}
+        draggable="true"
+        onDragStart={dragStart}
+      ></td>
+    );
+  } else {
+    return (
+      <td
+        className={`${tileClass} ${!mazeActive ? "grid-border" : ""} grid-cell`}
+        data-i={i}
+        data-j={j}
+        onClick={() => props.onCellClicked(i, j)}
+        onDragOver={dragOver}
+        onDragEnter={dragEnter}
+        onDragLeave={dragLeave}
+        onDrop={dragDrop}
+      ></td>
+    );
+  }
 };
 
 export default GridCell;

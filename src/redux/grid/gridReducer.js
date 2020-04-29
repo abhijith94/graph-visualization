@@ -7,6 +7,7 @@ import {
   resetVisitedAndSPUtil,
   addWeightsUtil,
   onCellClickUtil,
+  onDragDropUtil,
 } from "./gridUtils";
 
 const INITIAL_STATE = {
@@ -87,6 +88,18 @@ const gridReducer = (state = INITIAL_STATE, action) => {
         gridCells: onCellClickUtil(state, action.payload),
       };
 
+    case GRID_TYPES.DRAG_DROP: {
+      const { playerPos, targetPos, gridCells } = onDragDropUtil(
+        state,
+        action.payload
+      );
+      return {
+        ...state,
+        gridCells,
+        playerPos,
+        targetPos,
+      };
+    }
     default:
       return state;
   }
