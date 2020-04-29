@@ -36,3 +36,16 @@ export const resetVisitedAndSP = (i, j) => ({
 export const addWeights = () => ({
   type: GRID_TYPES.ADD_WEIGHTS,
 });
+
+export const wKeyPress = (pressed) => ({
+  type: GRID_TYPES.W_KEY_PRESS,
+  payload: pressed,
+});
+
+export const cellClicked = (i, j) => ({
+  type: GRID_TYPES.CELL_CLICKED,
+  payload: {
+    i,
+    j,
+  },
+});

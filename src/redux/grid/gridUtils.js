@@ -81,7 +81,6 @@ export const resetVisitedAndSPUtil = (state) => {
 };
 
 export const addWeightsUtil = (state) => {
-  console.log(state);
   const gridCells = [...state.gridCells];
 
   for (let i = 0; i < gridCells.length; i++) {
@@ -97,6 +96,38 @@ export const addWeightsUtil = (state) => {
         gridCells[i][j].weight = 2;
       }
     }
+  }
+
+  return gridCells;
+};
+
+export const onCellClickUtil = (state, { i, j }) => {
+  const { wKeyPressed } = state;
+  const gridCells = [...state.gridCells];
+
+  if (wKeyPressed) {
+    if (
+      gridCells[i][j].isPlayer === false &&
+      gridCells[i][j].isTarget === false
+    ) {
+      if (gridCells[i][j].isWall === true) {
+        gridCells[i][j].isWall = false;
+      }
+      gridCells[i][j].isWeight = true;
+      gridCells[i][j].weight = 2;
+    }
+  } else if (
+    gridCells[i][j].isPlayer === false &&
+    gridCells[i][j].isTarget === false &&
+    gridCells[i][j].isWall === true
+  ) {
+    gridCells[i][j].isWall = false;
+    gridCells[i][j].weight = 1;
+  } else if (gridCells[i][j].isWeight === true) {
+    gridCells[i][j].isWeight = false;
+    gridCells[i][j].weight = 1;
+  } else {
+    gridCells[i][j].isWall = true;
   }
 
   return gridCells;

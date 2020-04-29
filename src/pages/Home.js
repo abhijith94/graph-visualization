@@ -28,7 +28,6 @@ class Home extends Component {
                 disabled={!enableVisualizeButton}
                 className="create-maze"
                 onClick={() => {
-                  //createGrid();
                   createMaze();
                 }}
               >

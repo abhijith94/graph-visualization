@@ -4,7 +4,7 @@ import "./App.css";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" onKeyPress={(e) => console.log(e)}>
       <Home></Home>
     </div>
   );

@@ -6,6 +6,7 @@ import {
   makeCellSPUtil,
   resetVisitedAndSPUtil,
   addWeightsUtil,
+  onCellClickUtil,
 } from "./gridUtils";
 
 const INITIAL_STATE = {
@@ -17,11 +18,12 @@ const INITIAL_STATE = {
     j: 3,
   },
   targetPos: {
-    i: 5,
+    i: 11,
     j: 35,
   },
   enableVisualizeButton: true,
   mazeActive: false,
+  wKeyPressed: false,
 };
 
 const gridReducer = (state = INITIAL_STATE, action) => {
@@ -71,6 +73,18 @@ const gridReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         gridCells: addWeightsUtil(state),
+      };
+
+    case GRID_TYPES.W_KEY_PRESS:
+      return {
+        ...state,
+        wKeyPressed: action.payload,
+      };
+
+    case GRID_TYPES.CELL_CLICKED:
+      return {
+        ...state,
+        gridCells: onCellClickUtil(state, action.payload),
       };
 
     default:

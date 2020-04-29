@@ -10,6 +10,8 @@ const GridCell = (props) => {
     isWeight,
     shortestPath,
     mazeActive,
+    i,
+    j,
   } = props;
 
   let tileClass = [];
@@ -36,6 +38,7 @@ const GridCell = (props) => {
   return (
     <td
       className={`${tileClass} ${!mazeActive ? "grid-border" : ""} grid-cell`}
+      onClick={() => props.onCellClicked(i, j)}
     ></td>
   );
 };

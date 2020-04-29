@@ -11,6 +11,8 @@ import {
   markShortestPath,
   findPath,
   createGrid,
+  wKeyPress,
+  cellClicked,
 } from "../../redux/grid/gridActions";
 import "./Grid.scss";
 
@@ -20,8 +22,10 @@ class Grid extends Component {
   };
 
   componentDidMount() {
-    const { buildGrid } = this.props;
+    const { buildGrid, wKeyPressed } = this.props;
     buildGrid();
+
+    this.handleKeyPress(wKeyPressed);
   }
 
   componentDidUpdate() {
@@ -349,8 +353,20 @@ class Grid extends Component {
     });
   };
 
+  handleKeyPress = (wKeyPressed) => {
+    document.onkeydown = (e) => {
+      if (e.key === "w" || e.key === "W") {
+        wKeyPressed(true);
+      }
+    };
+
+    document.onkeyup = (e) => {
+      wKeyPressed(false);
+    };
+  };
+
   render() {
-    const { gridCells } = this.props;
+    const { gridCells, wKeyPressed, cellClick } = this.props;
 
     return (
       <table className="table">
@@ -358,7 +374,12 @@ class Grid extends Component {
           {gridCells.map((row, i) => (
             <tr key={i}>
               {row.map((col, j) => (
-                <GridCell key={j} {...col}></GridCell>
+                <GridCell
+                  key={j}
+                  {...col}
+                  wKeyPressed={wKeyPressed}
+                  onCellClicked={cellClick}
+                ></GridCell>
               ))}
             </tr>
           ))}
@@ -383,6 +404,8 @@ const mapDispatchToProps = (dispatch) => ({
   markVisited: (i, j) => dispatch(markCellVisited(i, j)),
   markSP: (i, j) => dispatch(markShortestPath(i, j)),
   findPath: () => dispatch(findPath(true)),
+  wKeyPressed: (pressed) => dispatch(wKeyPress(pressed)),
+  cellClick: (i, j) => dispatch(cellClicked(i, j)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid);
