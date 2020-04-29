@@ -14,6 +14,8 @@ import {
   wKeyPress,
   cellClicked,
   dragDrop,
+  mouseDown,
+  mouseOver,
 } from "../../redux/grid/gridActions";
 import "./Grid.scss";
 
@@ -337,7 +339,6 @@ class Grid extends Component {
     markSP
   ) => {
     let temp = targetId;
-    console.log(playerId);
     while (temp !== playerId) {
       let parentId = parent.get(temp);
 
@@ -374,6 +375,8 @@ class Grid extends Component {
       dragNDrop,
       algorithms,
       currentAlg,
+      onMouseDown,
+      onMouseOver,
     } = this.props;
 
     return (
@@ -390,6 +393,10 @@ class Grid extends Component {
                     cellClick(i, j, algorithms[currentAlg].type)
                   }
                   onDragDrop={dragNDrop}
+                  mouseDown={onMouseDown}
+                  mouseOver={(i, j) =>
+                    onMouseOver(i, j, algorithms[currentAlg].type)
+                  }
                 ></GridCell>
               ))}
             </tr>
@@ -419,6 +426,8 @@ const mapDispatchToProps = (dispatch) => ({
   wKeyPressed: (pressed) => dispatch(wKeyPress(pressed)),
   cellClick: (i, j, algType) => dispatch(cellClicked(i, j, algType)),
   dragNDrop: (i, j, type) => dispatch(dragDrop(i, j, type)),
+  onMouseDown: (down) => dispatch(mouseDown(down)),
+  onMouseOver: (i, j, algType) => dispatch(mouseOver(i, j, algType)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid);

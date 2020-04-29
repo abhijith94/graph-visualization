@@ -107,35 +107,37 @@ export const addWeightsUtil = (state) => {
 };
 
 export const onCellClickUtil = (state, { i, j, algType }) => {
-  const { wKeyPressed } = state;
+  const { wKeyPressed, enableVisualizeButton } = state;
   const gridCells = [...state.gridCells];
 
-  if (wKeyPressed && algType === "weighted") {
-    if (
+  if (enableVisualizeButton) {
+    if (wKeyPressed && algType === "weighted") {
+      if (
+        gridCells[i][j].isPlayer === false &&
+        gridCells[i][j].isTarget === false
+      ) {
+        if (gridCells[i][j].isWall === true) {
+          gridCells[i][j].isWall = false;
+        }
+        gridCells[i][j].isWeight = true;
+        gridCells[i][j].weight = 2;
+      }
+    } else if (
+      gridCells[i][j].isPlayer === false &&
+      gridCells[i][j].isTarget === false &&
+      gridCells[i][j].isWall === true
+    ) {
+      gridCells[i][j].isWall = false;
+      gridCells[i][j].weight = 1;
+    } else if (gridCells[i][j].isWeight === true) {
+      gridCells[i][j].isWeight = false;
+      gridCells[i][j].weight = 1;
+    } else if (
       gridCells[i][j].isPlayer === false &&
       gridCells[i][j].isTarget === false
     ) {
-      if (gridCells[i][j].isWall === true) {
-        gridCells[i][j].isWall = false;
-      }
-      gridCells[i][j].isWeight = true;
-      gridCells[i][j].weight = 2;
+      gridCells[i][j].isWall = true;
     }
-  } else if (
-    gridCells[i][j].isPlayer === false &&
-    gridCells[i][j].isTarget === false &&
-    gridCells[i][j].isWall === true
-  ) {
-    gridCells[i][j].isWall = false;
-    gridCells[i][j].weight = 1;
-  } else if (gridCells[i][j].isWeight === true) {
-    gridCells[i][j].isWeight = false;
-    gridCells[i][j].weight = 1;
-  } else if (
-    gridCells[i][j].isPlayer === false &&
-    gridCells[i][j].isTarget === false
-  ) {
-    gridCells[i][j].isWall = true;
   }
 
   return gridCells;
@@ -168,6 +170,25 @@ export const onDragDropUtil = (state, { i, j, type }) => {
   }
 
   return { playerPos, targetPos, gridCells };
+};
+
+export const onMouseDownMouseOverUtil = (state, { i, j, type }) => {
+  const gridCells = [...state.gridCells];
+  const { mouseDown, wKeyPressed, enableVisualizeButton } = state;
+
+  if (enableVisualizeButton) {
+    if (mouseDown === true && wKeyPressed === true && type === "weighted") {
+      gridCells[i][j].isWall = false;
+      gridCells[i][j].isWeight = true;
+      gridCells[i][j].weight = 2;
+    } else if (mouseDown === true) {
+      gridCells[i][j].isWall = true;
+      gridCells[i][j].isWeight = false;
+      gridCells[i][j].weight = 1;
+    }
+  }
+
+  return gridCells;
 };
 
 function recursiveDivision(gridCells, minI, maxI, minJ, maxJ) {

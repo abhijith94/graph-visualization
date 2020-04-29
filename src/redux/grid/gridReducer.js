@@ -8,6 +8,7 @@ import {
   addWeightsUtil,
   onCellClickUtil,
   onDragDropUtil,
+  onMouseDownMouseOverUtil,
 } from "./gridUtils";
 
 const INITIAL_STATE = {
@@ -25,6 +26,7 @@ const INITIAL_STATE = {
   enableVisualizeButton: true,
   mazeActive: false,
   wKeyPressed: false,
+  mouseDown: false,
 };
 
 const gridReducer = (state = INITIAL_STATE, action) => {
@@ -100,6 +102,19 @@ const gridReducer = (state = INITIAL_STATE, action) => {
         targetPos,
       };
     }
+
+    case GRID_TYPES.MOUSE_DOWN:
+      return {
+        ...state,
+        mouseDown: action.payload,
+      };
+
+    case GRID_TYPES.MOUSE_OVER:
+      return {
+        ...state,
+        gridCells: onMouseDownMouseOverUtil(state, action.payload),
+      };
+
     default:
       return state;
   }

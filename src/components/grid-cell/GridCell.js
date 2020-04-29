@@ -12,8 +12,11 @@ const GridCell = (props) => {
     mazeActive,
     i,
     j,
+    onCellClicked,
     draggable,
     onDragDrop,
+    mouseDown,
+    mouseOver,
   } = props;
 
   let tileClass = [];
@@ -76,7 +79,7 @@ const GridCell = (props) => {
     onDragDrop(i, j, type);
   };
 
-  if (draggable) {
+  if (draggable === true) {
     return (
       <td
         className={`${tileClass} ${!mazeActive ? "grid-border" : ""} grid-cell`}
@@ -84,7 +87,7 @@ const GridCell = (props) => {
         data-j={j}
         data-isplayer={isPlayer}
         data-istarget={isTarget}
-        onClick={() => props.onCellClicked(i, j)}
+        onClick={() => onCellClicked(i, j)}
         draggable="true"
         onDragStart={dragStart}
       ></td>
@@ -95,11 +98,23 @@ const GridCell = (props) => {
         className={`${tileClass} ${!mazeActive ? "grid-border" : ""} grid-cell`}
         data-i={i}
         data-j={j}
-        onClick={() => props.onCellClicked(i, j)}
         onDragOver={dragOver}
         onDragEnter={dragEnter}
         onDragLeave={dragLeave}
         onDrop={dragDrop}
+        onMouseDown={(e) => {
+          e.preventDefault();
+          onCellClicked(i, j);
+          mouseDown(true);
+        }}
+        onMouseUp={(e) => {
+          e.preventDefault();
+          mouseDown(false);
+        }}
+        onMouseOver={(e) => {
+          e.preventDefault();
+          mouseOver(i, j);
+        }}
       ></td>
     );
   }

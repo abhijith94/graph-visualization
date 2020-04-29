@@ -59,3 +59,17 @@ export const dragDrop = (i, j, type) => ({
     type,
   },
 });
+
+export const mouseDown = (down) => ({
+  type: GRID_TYPES.MOUSE_DOWN,
+  payload: down,
+});
+
+export const mouseOver = (i, j, type) => ({
+  type: GRID_TYPES.MOUSE_OVER,
+  payload: {
+    i,
+    j,
+    type,
+  },
+});
