@@ -12,6 +12,7 @@ export const createGridUtil = (state) => {
         id: shortid(),
         i,
         j,
+        isWeight: false,
         isWall: false,
         isPlayer: false,
         isTarget: false,
@@ -79,6 +80,28 @@ export const resetVisitedAndSPUtil = (state) => {
   return gridCells;
 };
 
+export const addWeightsUtil = (state) => {
+  console.log(state);
+  const gridCells = [...state.gridCells];
+
+  for (let i = 0; i < gridCells.length; i++) {
+    for (let j = 0; j < gridCells[i].length; j++) {
+      let x = Math.floor(Math.random() * 10);
+      if (
+        x === 5 &&
+        gridCells[i][j].isWall === false &&
+        gridCells[i][j].isPlayer === false &&
+        gridCells[i][j].isTarget === false
+      ) {
+        gridCells[i][j].isWeight = true;
+        gridCells[i][j].weight = 2;
+      }
+    }
+  }
+
+  return gridCells;
+};
+
 function recursiveDivision(gridCells, minI, maxI, minJ, maxJ) {
   if (minI >= maxI || minJ >= maxJ) return;
 
@@ -106,12 +129,12 @@ function recursiveDivision(gridCells, minI, maxI, minJ, maxJ) {
 
 function buildWall(minI, maxI, minJ, maxJ, direction, gridCells) {
   if (direction === "horizontal") {
-    while (minJ <= maxJ) {
+    while (minJ <= maxJ && gridCells[minI][minJ].isWeight === false) {
       gridCells[minI][minJ].isWall = true;
       minJ++;
     }
   } else {
-    while (minI <= maxI) {
+    while (minI <= maxI && gridCells[minI][minJ].isWeight === false) {
       gridCells[minI][minJ].isWall = true;
       minI++;
     }
@@ -146,12 +169,10 @@ function clearPlayerAndTargetWalls(playerPos, targetPos, gridCells) {
   if (gridCells[playerPos.i][playerPos.j].isWall) {
     gridCells[playerPos.i][playerPos.j].isWall = false;
     gridCells[playerPos.i][playerPos.j].isPlayer = true;
-    console.log("das");
   }
   if (gridCells[targetPos.i][targetPos.j].isWall) {
     gridCells[targetPos.i][targetPos.j].isWall = false;
     gridCells[targetPos.i][targetPos.j].isTarget = true;
-    console.log("sas");
   }
 }
 

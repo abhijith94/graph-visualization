@@ -6,6 +6,10 @@
   align-items: center;
   flex-direction: column;
 
+  .title {
+    color: white;
+  }
+
   select {
     width: 200px;
   }

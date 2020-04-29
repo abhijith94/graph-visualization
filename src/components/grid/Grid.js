@@ -236,6 +236,9 @@ class Grid extends Component {
 
       if (current.id === playerId) {
         shortestDistance.set(playerId, 0);
+      } else if (current.id === targetId) {
+        targetFound = true;
+        break;
       } else {
         shortestDistance.set(current.id, current.weight);
       }
@@ -258,13 +261,15 @@ class Grid extends Component {
       }
     }
 
-    this.drawShortestPath(
-      parent,
-      playerId,
-      targetId,
-      cellIdPositionMap,
-      markSP
-    );
+    if (targetFound) {
+      this.drawShortestPath(
+        parent,
+        playerId,
+        targetId,
+        cellIdPositionMap,
+        markSP
+      );
+    }
 
     findPath();
     this.setState({ routing: false });

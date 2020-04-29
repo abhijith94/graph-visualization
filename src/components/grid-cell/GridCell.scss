@@ -24,13 +24,19 @@
   }
 
   &.player {
-    background: url("../../assets/player/arrow.png") repeat;
+    background: url("../../assets/player/player.png") repeat;
     background-size: contain;
   }
 
   &.target {
-    background: url("../../assets/player/target.png") repeat;
+    background: url("../../assets/player/cherry.png") repeat;
     background-size: contain;
+  }
+
+  &.weight {
+    background: url("../../assets/tiles/weight.png") no-repeat;
+    background-size: contain;
+    width: 10px;
   }
 
   &.visited {

@@ -32,3 +32,7 @@ export const markShortestPath = (i, j) => ({
 export const resetVisitedAndSP = (i, j) => ({
   type: GRID_TYPES.RESET_VISITED_AND_SP,
 });
+
+export const addWeights = () => ({
+  type: GRID_TYPES.ADD_WEIGHTS,
+});

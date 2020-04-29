@@ -16,10 +16,12 @@ export class Filter extends Component {
 
     return (
       <div className="filter">
+        <h3 className="title">Select Algorithm:</h3>
         <select
           name="algorithm"
           className="form-control"
           onChange={(e) => chooseAlg(e.target.value)}
+          disabled={!enableVisualizeButton}
         >
           {algorithms.map((alg) => (
             <option value={alg} key={alg}>

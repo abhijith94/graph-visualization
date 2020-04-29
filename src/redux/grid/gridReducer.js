@@ -5,6 +5,7 @@ import {
   makeCellVisitedUtil,
   makeCellSPUtil,
   resetVisitedAndSPUtil,
+  addWeightsUtil,
 } from "./gridUtils";
 
 const INITIAL_STATE = {
@@ -64,6 +65,12 @@ const gridReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         gridCells: resetVisitedAndSPUtil(state),
+      };
+
+    case GRID_TYPES.ADD_WEIGHTS:
+      return {
+        ...state,
+        gridCells: addWeightsUtil(state),
       };
 
     default:

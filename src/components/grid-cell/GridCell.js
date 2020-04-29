@@ -7,6 +7,7 @@ const GridCell = (props) => {
     isPlayer,
     isTarget,
     visited,
+    isWeight,
     shortestPath,
     mazeActive,
   } = props;
@@ -18,10 +19,16 @@ const GridCell = (props) => {
     tileClass = "player";
   } else if (isTarget) {
     tileClass = "target";
-  } else if (visited) {
+  } else if (visited && !isWeight) {
     tileClass = "visited";
-  } else if (shortestPath) {
+  } else if (visited && isWeight) {
+    tileClass = "visited weight";
+  } else if (shortestPath && !isWeight) {
     tileClass = "shortest-path";
+  } else if (shortestPath && isWeight) {
+    tileClass = "shortest-path weight";
+  } else if (isWeight) {
+    tileClass = "weight";
   } else {
     tileClass = "floor";
   }

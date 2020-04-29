@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { createGrid, createMaze } from "../redux/grid/gridActions";
+import { createGrid, createMaze, addWeights } from "../redux/grid/gridActions";
 import Grid from "../components/grid/Grid";
 import Filter from "../components/filter/Filter";
 import "./Home.scss";
@@ -9,7 +9,12 @@ class Home extends Component {
   componentDidMount() {}
 
   render() {
-    const { createGrid, createMaze, enableVisualizeButton } = this.props;
+    const {
+      createGrid,
+      createMaze,
+      enableVisualizeButton,
+      addWeight,
+    } = this.props;
 
     return (
       <div className="home">
@@ -23,11 +28,22 @@ class Home extends Component {
                 disabled={!enableVisualizeButton}
                 className="create-maze"
                 onClick={() => {
-                  createGrid();
+                  //createGrid();
                   createMaze();
                 }}
               >
                 <span className="squirk">Create Maze</span>
+              </button>
+            </div>
+            <div>
+              <button
+                disabled={!enableVisualizeButton}
+                className="create-weights"
+                onClick={() => {
+                  addWeight();
+                }}
+              >
+                <span className="squirk">Add Weights</span>
               </button>
             </div>
             <div>
@@ -64,6 +80,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   createGrid: () => dispatch(createGrid()),
   createMaze: () => dispatch(createMaze()),
+  addWeight: () => dispatch(addWeights()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
