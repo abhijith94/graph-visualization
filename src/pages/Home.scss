@@ -123,13 +123,29 @@
     display: flex;
     justify-content: space-between;
     .filter-container {
-      height: 40%;
-      width: 20%;
+      height: 100%;
+      width: 100%;
       border: 5px solid white;
       border-radius: 40px;
       background-image: url("../assets/tiles/path_grey.png");
       background-size: 32px;
       background-repeat: repeat;
+      margin-left: 20px;
+      padding: 50px 20px 50px 20px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .tutorial-container {
+      height: 100%;
+      width: 100%;
+      border: 5px solid white;
+      border-radius: 40px;
+      background-image: url("../assets/tiles/path_grey.png");
+      background-size: 32px;
+      background-repeat: repeat;
+      margin-top: 30px;
       margin-left: 20px;
       position: relative;
       display: flex;

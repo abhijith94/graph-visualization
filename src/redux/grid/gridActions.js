@@ -42,11 +42,12 @@ export const wKeyPress = (pressed) => ({
   payload: pressed,
 });
 
-export const cellClicked = (i, j) => ({
+export const cellClicked = (i, j, algType) => ({
   type: GRID_TYPES.CELL_CLICKED,
   payload: {
     i,
     j,
+    algType,
   },
 });
 

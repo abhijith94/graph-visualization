@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { createGrid, createMaze, addWeights } from "../redux/grid/gridActions";
 import Grid from "../components/grid/Grid";
 import Filter from "../components/filter/Filter";
+import Tutorial from "../components/tutorial/Tutorial";
 import "./Home.scss";
 
 class Home extends Component {
@@ -14,6 +15,8 @@ class Home extends Component {
       createMaze,
       enableVisualizeButton,
       addWeight,
+      algorithms,
+      currentAlg,
     } = this.props;
 
     return (
@@ -37,7 +40,10 @@ class Home extends Component {
             </div>
             <div>
               <button
-                disabled={!enableVisualizeButton}
+                disabled={
+                  !enableVisualizeButton ||
+                  algorithms[currentAlg].type === "unweighted"
+                }
                 className="create-weights"
                 onClick={() => {
                   addWeight();
@@ -61,8 +67,13 @@ class Home extends Component {
         </div>
         <div className="middle"></div>
         <div className="bottom">
-          <div className="filter-container">
-            <Filter></Filter>
+          <div style={{ width: "20%", height: "fit-content" }}>
+            <div className="filter-container">
+              <Filter></Filter>
+            </div>
+            <div className="tutorial-container">
+              <Tutorial></Tutorial>
+            </div>
           </div>
           <div className="grid-container">
             <Grid></Grid>
@@ -75,6 +86,8 @@ class Home extends Component {
 
 const mapStateToProps = (state) => ({
   enableVisualizeButton: state.grid.enableVisualizeButton,
+  algorithms: state.filter.algorithms,
+  currentAlg: state.filter.currentAlg,
 });
 
 const mapDispatchToProps = (dispatch) => ({

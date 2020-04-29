@@ -44,7 +44,7 @@ class Grid extends Component {
     if (!enableVisualizeButton && !this.state.routing) {
       this.setState({ routing: true }, () => {
         switch (currentAlg) {
-          case "Breadth First Search":
+          case 0:
             this.bfs(
               gridCells,
               playerPos,
@@ -55,7 +55,7 @@ class Grid extends Component {
             );
             break;
 
-          case "Depth First Search":
+          case 1:
             this.dfs(
               gridCells,
               playerPos,
@@ -66,7 +66,7 @@ class Grid extends Component {
             );
             break;
 
-          case "Dijkstra":
+          case 2:
             this.dijkstra(
               gridCells,
               playerPos,
@@ -367,7 +367,14 @@ class Grid extends Component {
   };
 
   render() {
-    const { gridCells, wKeyPressed, cellClick, dragNDrop } = this.props;
+    const {
+      gridCells,
+      wKeyPressed,
+      cellClick,
+      dragNDrop,
+      algorithms,
+      currentAlg,
+    } = this.props;
 
     return (
       <table className="table">
@@ -379,7 +386,9 @@ class Grid extends Component {
                   key={j}
                   {...col}
                   wKeyPressed={wKeyPressed}
-                  onCellClicked={cellClick}
+                  onCellClicked={(i, j) =>
+                    cellClick(i, j, algorithms[currentAlg].type)
+                  }
                   onDragDrop={dragNDrop}
                 ></GridCell>
               ))}
@@ -399,6 +408,7 @@ const mapStateToProps = (state) => ({
   targetPos: state.grid.targetPos,
   enableVisualizeButton: state.grid.enableVisualizeButton,
   currentAlg: state.filter.currentAlg,
+  algorithms: state.filter.algorithms,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -407,7 +417,7 @@ const mapDispatchToProps = (dispatch) => ({
   markSP: (i, j) => dispatch(markShortestPath(i, j)),
   findPath: () => dispatch(findPath(true)),
   wKeyPressed: (pressed) => dispatch(wKeyPress(pressed)),
-  cellClick: (i, j) => dispatch(cellClicked(i, j)),
+  cellClick: (i, j, algType) => dispatch(cellClicked(i, j, algType)),
   dragNDrop: (i, j, type) => dispatch(dragDrop(i, j, type)),
 });
 

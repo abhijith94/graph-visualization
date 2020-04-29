@@ -1,6 +1,6 @@
 import FILTER_TYPES from "./filterTypes";
 
-export const chooseAlg = (alg) => ({
+export const chooseAlg = (id) => ({
   type: FILTER_TYPES.CHOOSE_ALGO,
-  payload: alg,
+  payload: id,
 });

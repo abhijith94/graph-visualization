@@ -1,8 +1,29 @@
 import FILTER_TYPES from "./filterTypes";
 
 const INITIAL_STATE = {
-  algorithms: ["Breadth First Search", "Depth First Search", "Dijkstra"],
-  currentAlg: "Breadth First Search",
+  algorithms: [
+    {
+      id: 0,
+      type: "unweighted",
+      name: "Breadth First Search",
+      abbreviation: "BFS",
+      description: "BFS is unweighted & gives shortest path",
+    },
+    {
+      id: 1,
+      type: "unweighted",
+      name: "Depth First Search",
+      abbreviation: "DFS",
+      description: "DFS is unweighted & doesn't guarantee shortest path",
+    },
+    {
+      id: 2,
+      type: "weighted",
+      name: "Dijkstra",
+      description: "Dijkstra is weighted & guarantees shortest path",
+    },
+  ],
+  currentAlg: 0,
 };
 
 const filterReducer = (state = INITIAL_STATE, action) => {

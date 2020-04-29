@@ -12,6 +12,7 @@ export class Filter extends Component {
       enableVisualizeButton,
       findPath,
       resetVisitedAndSPCells,
+      currentAlg,
     } = this.props;
 
     return (
@@ -24,11 +25,12 @@ export class Filter extends Component {
           disabled={!enableVisualizeButton}
         >
           {algorithms.map((alg) => (
-            <option value={alg} key={alg}>
-              {alg}
+            <option value={alg.id} key={alg.id}>
+              {alg.name}
             </option>
           ))}
         </select>
+        <p className="alg-info">{algorithms[currentAlg].description}</p>
         <button
           className="visualize-btn"
           disabled={!enableVisualizeButton}
@@ -51,7 +53,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  chooseAlg: (alg) => dispatch(chooseAlg(alg)),
+  chooseAlg: (id) => dispatch(chooseAlg(parseInt(id))),
   findPath: () => dispatch(findPath(false)),
   resetVisitedAndSPCells: () => dispatch(resetVisitedAndSP()),
 });

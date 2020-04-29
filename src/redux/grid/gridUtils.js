@@ -106,11 +106,11 @@ export const addWeightsUtil = (state) => {
   return gridCells;
 };
 
-export const onCellClickUtil = (state, { i, j }) => {
+export const onCellClickUtil = (state, { i, j, algType }) => {
   const { wKeyPressed } = state;
   const gridCells = [...state.gridCells];
 
-  if (wKeyPressed) {
+  if (wKeyPressed && algType === "weighted") {
     if (
       gridCells[i][j].isPlayer === false &&
       gridCells[i][j].isTarget === false

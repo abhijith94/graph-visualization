@@ -1,4 +1,4 @@
-.filter {
+.info-panel {
   height: 100%;
   width: 100%;
   display: flex;
@@ -9,17 +9,6 @@
   .title {
     color: white;
     text-align: center;
-  }
-
-  .alg-info {
-    font-family: "Roboto", sans-serif;
-    font-weight: 500;
-    color: white;
-    font-size: 20px;
-    text-align: center;
-    margin: 20px 0 0 0;
-    border: 4px dashed white;
-    padding: 5px;
   }
 
   select {
