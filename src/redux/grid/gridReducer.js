@@ -12,15 +12,15 @@ import {
 } from "./gridUtils";
 
 const INITIAL_STATE = {
-  rows: 22,
+  rows: calculateRowsNeeded(),
   columns: 40,
   gridCells: [],
   playerPos: {
-    i: 11,
+    i: Math.floor(calculateRowsNeeded() / 2),
     j: 3,
   },
   targetPos: {
-    i: 11,
+    i: Math.floor(calculateRowsNeeded() / 2),
     j: 35,
   },
   enableVisualizeButton: true,
@@ -28,6 +28,20 @@ const INITIAL_STATE = {
   wKeyPressed: false,
   mouseDown: false,
 };
+
+function calculateRowsNeeded() {
+  let height = window.screen.height;
+  let defaultRowCount = 22;
+
+  if (height >= 1080) {
+    return defaultRowCount;
+  } else {
+    let diff = 1080 - window.innerHeight;
+    let perc = Math.floor((diff / 1080) * 100);
+    perc = 0.75 * perc;
+    return Math.floor(((100 - perc) / 100) * defaultRowCount);
+  }
+}
 
 const gridReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {

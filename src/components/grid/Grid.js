@@ -243,7 +243,7 @@ class Grid extends Component {
 
       if (current.id === playerId) {
         shortestDistance.set(playerId, 0);
-      } else if (current.id === targetId) {
+      } else if (current.id === targetId && current.weight !== Infinity) {//infinity to make sure the node has atleast been touched
         targetFound = true;
         break;
       } else {

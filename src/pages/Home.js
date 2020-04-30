@@ -76,7 +76,7 @@ class Home extends Component {
               <Tutorial></Tutorial>
             </div>
           </div>
-          <div style={{ width: "73%" }}>
+          <div className="grid-container-parent">
             <div className="grid-container">
               <Grid></Grid>
             </div>

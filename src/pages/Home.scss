@@ -150,10 +150,19 @@
       justify-content: center;
     }
 
-    .grid-container {
-      height: fit-content;
-      border: 5px solid white;
-      margin-right: 20px;
+    .grid-container-parent {
+      width: 73%;
+      padding-right: 20px;
+
+      @media (max-width: 1366px) {
+        width: 76%;
+      }
+
+      .grid-container {
+        height: fit-content;
+        //border: 5px solid white;
+        //margin-right: 20px;
+      }
     }
   }
 }
