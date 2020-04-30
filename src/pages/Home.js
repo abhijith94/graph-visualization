@@ -7,6 +7,7 @@ import Tutorial from "../components/tutorial/Tutorial";
 import Legend from "../components/legend/Legend";
 import idea from "../assets/buttons/idea.png";
 import { openModal } from "../redux/modal/ModalActions";
+import github from "../assets/other/github.png";
 import "./Home.scss";
 
 class Home extends Component {
@@ -21,7 +22,6 @@ class Home extends Component {
       algorithms,
       currentAlg,
       modalOpen,
-      modalActive,
     } = this.props;
 
     return (
@@ -96,11 +96,17 @@ class Home extends Component {
                 Tutorial
               </button>
             </div>
-            {!modalActive ? (
-              <div className="tutorial-container">
-                <Tutorial></Tutorial>
-              </div>
-            ) : null}
+            <div className="github">
+              <a
+                href="https://github.com/abhijith94/graph-visualization"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src={github} alt="github" />
+                <br />
+                Code
+              </a>
+            </div>
           </div>
           <div className="grid-container-parent">
             <div className="grid-container">
@@ -120,7 +126,6 @@ const mapStateToProps = (state) => ({
   enableVisualizeButton: state.grid.enableVisualizeButton,
   algorithms: state.filter.algorithms,
   currentAlg: state.filter.currentAlg,
-  modalActive: state.modal.active,
 });
 
 const mapDispatchToProps = (dispatch) => ({

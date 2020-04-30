@@ -138,22 +138,18 @@
     }
 
     .show-tutorial {
-      display: none;
       position: relative;
       margin-left: 30px;
       margin-top: 30px;
       justify-content: center;
-
-      @media (max-width: 1440px) {
-        display: flex;
-      }
+      display: flex;
 
       .idea-icon {
         width: 30px;
         height: 30px;
         position: absolute;
         top: 4px;
-        left: 40px;
+        left: 10px;
       }
 
       button {
@@ -162,6 +158,7 @@
         height: 49px;
         border: none;
         color: #fff;
+        position: relative;
 
         &:hover {
           opacity: 0.9;
@@ -180,21 +177,23 @@
       }
     }
 
-    .tutorial-container {
-      width: 100%;
-      border: 5px solid white;
-      border-radius: 40px;
-      background-image: url("../assets/tiles/path_grey.png");
-      background-size: 32px;
-      background-repeat: repeat;
-      margin-top: 60px;
-      margin-left: 20px;
-      position: relative;
+    .github {
+      margin-top: 80px;
       display: flex;
       justify-content: center;
+      img {
+        width: 40px;
+        height: 40px;
+      }
 
-      @media (max-width: 1440px) {
-        display: none;
+      a,
+      a:active,
+      a:visited {
+        color: white;
+        text-decoration: none;
+        font-family: "Roboto", sans-serif;
+        font-weight: bold;
+        text-align: center;
       }
     }
 
