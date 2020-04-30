@@ -114,7 +114,7 @@
 
   .bottom {
     width: 100%;
-    min-height: 100vh;
+    height: 86%;
     background-image: url("../assets/tiles/platformPack_tile004.png");
     background-repeat: repeat;
     position: absolute;
@@ -122,6 +122,7 @@
     left: 0;
     display: flex;
     justify-content: space-between;
+
     .filter-container {
       width: 100%;
       border: 5px solid white;
@@ -130,10 +131,53 @@
       background-size: 32px;
       background-repeat: repeat;
       margin-left: 20px;
-      padding: 50px 20px 50px 20px;
+      padding: 16px 20px 24px 20px;
       position: relative;
       display: flex;
       justify-content: center;
+    }
+
+    .show-tutorial {
+      display: none;
+      position: relative;
+      margin-left: 30px;
+      margin-top: 30px;
+      justify-content: center;
+
+      @media (max-width: 1440px) {
+        display: flex;
+      }
+
+      .idea-icon {
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: 4px;
+        left: 40px;
+      }
+
+      button {
+        background: url("../assets/buttons/green_button_normal.png") no-repeat;
+        width: 200px;
+        height: 49px;
+        border: none;
+        color: #fff;
+
+        &:hover {
+          opacity: 0.9;
+        }
+        &:focus {
+          outline: none;
+        }
+        &:active {
+          background: url("../assets/buttons/green_button_pressed.png")
+            no-repeat;
+        }
+        &:disabled {
+          pointer-events: none;
+          opacity: 0.5;
+        }
+      }
     }
 
     .tutorial-container {
@@ -143,11 +187,15 @@
       background-image: url("../assets/tiles/path_grey.png");
       background-size: 32px;
       background-repeat: repeat;
-      margin-top: 30px;
+      margin-top: 60px;
       margin-left: 20px;
       position: relative;
       display: flex;
       justify-content: center;
+
+      @media (max-width: 1440px) {
+        display: none;
+      }
     }
 
     .grid-container-parent {
@@ -156,12 +204,6 @@
 
       @media (max-width: 1366px) {
         width: 76%;
-      }
-
-      .grid-container {
-        height: fit-content;
-        //border: 5px solid white;
-        //margin-right: 20px;
       }
     }
   }
