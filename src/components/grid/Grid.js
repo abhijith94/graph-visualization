@@ -22,6 +22,7 @@ import "./Grid.scss";
 class Grid extends Component {
   state = {
     routing: false,
+    animationWait: 20,
   };
 
   componentDidMount() {
@@ -116,7 +117,7 @@ class Grid extends Component {
 
           let { i, j } = cellIdPositionMap.get(temp.id);
           markVisited(i, j);
-          await this.wait(5);
+          await this.wait(this.state.animationWait);
 
           if (temp.id === targetId) {
             targetFound = true;
@@ -173,7 +174,7 @@ class Grid extends Component {
       let node = stack.pop();
       let { i, j } = cellIdPositionMap.get(node.id);
       markVisited(i, j);
-      await this.wait(5);
+      await this.wait(this.state.animationWait);
 
       let temp = graph.adjList.get(node.id).head;
       while (temp !== null) {
@@ -243,7 +244,8 @@ class Grid extends Component {
 
       if (current.id === playerId) {
         shortestDistance.set(playerId, 0);
-      } else if (current.id === targetId && current.weight !== Infinity) {//infinity to make sure the node has atleast been touched
+      } else if (current.id === targetId && current.weight !== Infinity) {
+        //infinity to make sure the node has atleast been touched
         targetFound = true;
         break;
       } else {
@@ -261,7 +263,7 @@ class Grid extends Component {
 
           let { i, j } = cellIdPositionMap.get(head.id);
           markVisited(i, j);
-          await this.wait(0);
+          await this.wait(this.state.animationWait);
         }
 
         head = head.next;
@@ -344,7 +346,7 @@ class Grid extends Component {
 
       let { i, j } = cellIdPositionMap.get(parentId);
       markSP(i, j);
-      await this.wait(10);
+      await this.wait(this.state.animationWait);
       temp = parentId;
     }
   };

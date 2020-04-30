@@ -11,7 +11,7 @@ class InfoPanel extends Component {
             <span className="emphasize">Left</span> click mouse to add a wall.
           </li>
           <li>
-            Hold <span className="emphasize">w</span> and click to add weights
+            Hold <span className="emphasize">w</span> and click to add weights.
           </li>
           <li>
             {" "}

@@ -45,7 +45,7 @@
   &.visited {
     opacity: 1;
     animation-name: visited;
-    animation-duration: 1.0s;
+    animation-duration: 1.5s;
     animation-timing-function: ease-out;
     animation-direction: alternate;
     animation-iteration-count: 1;
@@ -56,7 +56,7 @@
   &.shortest-path {
     opacity: 1;
     animation-name: shortest-path;
-    animation-duration: 1.0s;
+    animation-duration: 1.5s;
     animation-timing-function: ease-out;
     animation-direction: alternate;
     animation-iteration-count: 1;
