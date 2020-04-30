@@ -11,7 +11,7 @@ class LinkedList {
       newNode.next = this.head;
       this.head = newNode;
     } else {
-      console.log("Node already exists in the neighbour list");
+      //console.log("Node already exists in the neighbour list");
     }
   }
 

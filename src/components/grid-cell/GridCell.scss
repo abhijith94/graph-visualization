@@ -1,6 +1,6 @@
 .grid-cell {
   width: 30px;
-  height: 30px;
+  height: 32px;
   margin: 0;
   box-sizing: border-box;
   cursor: pointer;
@@ -14,7 +14,6 @@
     background-size: contain;
 
     &:hover {
-      //border: 1px solid rgba(255, 255, 255, 1) !important;
       cursor: pointer;
     }
   }
@@ -25,13 +24,13 @@
   }
 
   &.player {
-    background: url("../../assets/player/player.png") repeat;
-    background-size: contain;
+    background: url("../../assets/player/player.png") no-repeat;
+    background-size: cover;
   }
 
   &.target {
-    background: url("../../assets/player/cherry.png") repeat;
-    background-size: contain;
+    background: url("../../assets/player/cherry.png") no-repeat;
+    background-size: cover;
   }
 
   &.weight {

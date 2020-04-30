@@ -4,6 +4,7 @@ import { createGrid, createMaze, addWeights } from "../redux/grid/gridActions";
 import Grid from "../components/grid/Grid";
 import Filter from "../components/filter/Filter";
 import Tutorial from "../components/tutorial/Tutorial";
+import Legend from "../components/legend/Legend";
 import "./Home.scss";
 
 class Home extends Component {
@@ -75,8 +76,13 @@ class Home extends Component {
               <Tutorial></Tutorial>
             </div>
           </div>
-          <div className="grid-container">
-            <Grid></Grid>
+          <div style={{ width: "73%" }}>
+            <div className="grid-container">
+              <Grid></Grid>
+            </div>
+            <div>
+              <Legend></Legend>
+            </div>
           </div>
         </div>
       </div>
