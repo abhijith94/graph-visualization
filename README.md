@@ -7,7 +7,7 @@ Algorithms Implemented-
 
 ## Screenshots
 
-![screenshot]((https://github.com/abhijith94/graph-visualization/tree/master/screenshots/1.png)
-![screenshot]((https://github.com/abhijith94/graph-visualization/tree/master/screenshots/2.png)
-![screenshot]((https://github.com/abhijith94/graph-visualization/tree/master/screenshots/3.png)
-![screenshot]((https://github.com/abhijith94/graph-visualization/tree/master/screenshots/4.png)
+![screenshot](https://github.com/abhijith94/graph-visualization/tree/master/screenshots/1.png)
+![screenshot](https://github.com/abhijith94/graph-visualization/tree/master/screenshots/2.png)
+![screenshot](https://github.com/abhijith94/graph-visualization/tree/master/screenshots/3.png)
+![screenshot](https://github.com/abhijith94/graph-visualization/tree/master/screenshots/4.png)
