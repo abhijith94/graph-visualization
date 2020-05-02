@@ -19,8 +19,14 @@ const INITIAL_STATE = {
     {
       id: 2,
       type: "weighted",
-      name: "Dijkstra",
-      description: "Dijkstra is weighted & guarantees shortest path",
+      name: "Dijkstra's Algorithm",
+      description: "Dijkstra algorithm is weighted & guarantees shortest path",
+    },
+    {
+      id: 3,
+      type: "weighted",
+      name: "A* Algorithm",
+      description: "A* algorithm is weighted & guarantees shortest path",
     },
   ],
   currentAlg: 0,

@@ -22,7 +22,7 @@ import "./Grid.scss";
 class Grid extends Component {
   state = {
     routing: false,
-    animationWait: 20,
+    animationWait: 10,
   };
 
   componentDidMount() {
@@ -71,6 +71,17 @@ class Grid extends Component {
 
           case 2:
             this.dijkstra(
+              gridCells,
+              playerPos,
+              targetPos,
+              markVisited,
+              markSP,
+              findPath
+            );
+            break;
+
+          case 3:
+            this.AStar(
               gridCells,
               playerPos,
               targetPos,
@@ -284,6 +295,84 @@ class Grid extends Component {
     this.setState({ routing: false });
   };
 
+  AStar = async (
+    gridCells,
+    playerPos,
+    targetPos,
+    markVisited,
+    markSP,
+    findPath
+  ) => {
+    let { graph, cellIdPositionMap } = this.initializeGraph(gridCells);
+    let playerId = gridCells[playerPos.i][playerPos.j].id;
+    let targetId = gridCells[targetPos.i][targetPos.j].id;
+
+    let parent = new Map();
+    let shortestDistance = new Map();
+
+    let pq = new PriorityQueue();
+
+    for (let i = 0; i < gridCells.length; i++) {
+      for (let j = 0; j < gridCells[i].length; j++) {
+        if (!gridCells[i][j].isWall) {
+          pq.enqeue(new Node(gridCells[i][j].id, Infinity));
+        }
+      }
+    }
+
+    let targetFound = false;
+    pq.decreaseKey(playerId, 0);
+
+    while (!pq.isEmpty()) {
+      let current = pq.dequeue();
+
+      if (current.id === playerId) {
+        shortestDistance.set(current.id, 0);
+      } else if (current.id === targetId && current.weight !== Infinity) {
+        //infinity to make sure the node has atleast been touched
+        targetFound = true;
+        break;
+      } else {
+        shortestDistance.set(current.id, current.weight);
+      }
+
+      let head = graph.adjList.get(current.id).head; //neighbours
+
+      while (head !== null) {
+        // f(n) = g(n) + h(n)
+        let g = shortestDistance.get(current.id) + head.weight;
+
+        let { i, j } = cellIdPositionMap.get(head.id);
+        let h = Math.abs(targetPos.i - i) + Math.abs(targetPos.j - j);
+
+        let f = g + h;
+
+        if (pq.containsKey(head.id) && pq.peek(head.id).weight > f) {
+          pq.decreaseKey(head.id, f);
+          parent.set(head.id, current.id);
+
+          markVisited(i, j);
+          await this.wait(this.state.animationWait);
+        }
+
+        head = head.next;
+      }
+    }
+
+    if (targetFound) {
+      this.drawShortestPath(
+        parent,
+        playerId,
+        targetId,
+        cellIdPositionMap,
+        markSP
+      );
+    }
+
+    findPath();
+    this.setState({ routing: false });
+  };
+
   initializeGraph(gridCells) {
     let graph = new Graph();
     let cellIdPositionMap = new Map();
@@ -300,7 +389,9 @@ class Grid extends Component {
             graph.addPathBetweenVertices(
               gridCells[i][j].id,
               gridCells[i - 1][j].id,
-              gridCells[i - 1][j].weight
+              gridCells[i - 1][j].weight,
+              i - 1,
+              j
             );
           }
           //right
@@ -308,7 +399,9 @@ class Grid extends Component {
             graph.addPathBetweenVertices(
               gridCells[i][j].id,
               gridCells[i][j + 1].id,
-              gridCells[i][j + 1].weight
+              gridCells[i][j + 1].weight,
+              i,
+              j + 1
             );
           }
           //bottom
@@ -316,7 +409,9 @@ class Grid extends Component {
             graph.addPathBetweenVertices(
               gridCells[i][j].id,
               gridCells[i + 1][j].id,
-              gridCells[i + 1][j].weight
+              gridCells[i + 1][j].weight,
+              i + 1,
+              j
             );
           }
           //left
@@ -324,7 +419,9 @@ class Grid extends Component {
             graph.addPathBetweenVertices(
               gridCells[i][j].id,
               gridCells[i][j - 1].id,
-              gridCells[i][j - 1].weight
+              gridCells[i][j - 1].weight,
+              i,
+              j - 1
             );
           }
         }
