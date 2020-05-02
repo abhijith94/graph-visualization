@@ -9,6 +9,7 @@ Algorithms Implemented-
 - Breadth First Search
 - Depth First Search
 - Dijkstra's algorithm
+- A* algorithm
 
 ## Screenshots
 
