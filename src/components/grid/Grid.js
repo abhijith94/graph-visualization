@@ -344,7 +344,7 @@ class Grid extends Component {
         let { i, j } = cellIdPositionMap.get(head.id);
         let h = Math.abs(targetPos.i - i) + Math.abs(targetPos.j - j);
 
-        let f = g + h;
+        let f = g + h * 1.001; // h * 1.001 for tie-breaking if same f values exists in pq
 
         if (pq.containsKey(head.id) && pq.peek(head.id).weight > f) {
           pq.decreaseKey(head.id, f);
