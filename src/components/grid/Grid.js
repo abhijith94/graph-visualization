@@ -316,6 +316,7 @@ class Grid extends Component {
       for (let j = 0; j < gridCells[i].length; j++) {
         if (!gridCells[i][j].isWall) {
           pq.enqeue(new Node(gridCells[i][j].id, Infinity));
+          shortestDistance.set(gridCells[i][j].id, Infinity);
         }
       }
     }
@@ -332,8 +333,6 @@ class Grid extends Component {
         //infinity to make sure the node has atleast been touched
         targetFound = true;
         break;
-      } else {
-        shortestDistance.set(current.id, current.weight);
       }
 
       let head = graph.adjList.get(current.id).head; //neighbours
@@ -350,6 +349,8 @@ class Grid extends Component {
         if (pq.containsKey(head.id) && pq.peek(head.id).weight > f) {
           pq.decreaseKey(head.id, f);
           parent.set(head.id, current.id);
+
+          shortestDistance.set(head.id, g);
 
           markVisited(i, j);
           await this.wait(this.state.animationWait);
