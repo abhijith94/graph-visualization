@@ -20,6 +20,11 @@
     margin: 20px 0 0 0;
     border: 4px dashed white;
     padding: 5px;
+
+    .complexity {
+      color: darkslateblue;
+      font-weight: bold;
+    }
   }
 
   select {

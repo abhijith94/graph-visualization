@@ -30,7 +30,14 @@ export class Filter extends Component {
             </option>
           ))}
         </select>
-        <p className="alg-info">{algorithms[currentAlg].description}</p>
+        <p className="alg-info">
+          Complexity:
+          <span class="complexity">
+            {algorithms[currentAlg].complexity}
+          </span>{" "}
+          <br />
+          {algorithms[currentAlg].description}
+        </p>
         <button
           className="visualize-btn"
           disabled={!enableVisualizeButton}
