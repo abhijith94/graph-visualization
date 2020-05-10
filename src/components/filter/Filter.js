@@ -32,7 +32,7 @@ export class Filter extends Component {
         </select>
         <p className="alg-info">
           Complexity:
-          <span class="complexity">
+          <span className="complexity">
             {algorithms[currentAlg].complexity}
           </span>{" "}
           <br />
