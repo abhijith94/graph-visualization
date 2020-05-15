@@ -1,4 +1,4 @@
-# Graph Algorithms Visualizer
+# Pathfinding Visualizer
 
 ## Demo
 
