@@ -98,7 +98,7 @@ export const addWeightsUtil = (state) => {
         gridCells[i][j].isTarget === false
       ) {
         gridCells[i][j].isWeight = true;
-        gridCells[i][j].weight = 2;
+        gridCells[i][j].weight = 3;
       }
     }
   }
@@ -120,7 +120,7 @@ export const onCellClickUtil = (state, { i, j, algType }) => {
           gridCells[i][j].isWall = false;
         }
         gridCells[i][j].isWeight = true;
-        gridCells[i][j].weight = 2;
+        gridCells[i][j].weight = 3;
       }
     } else if (
       gridCells[i][j].isPlayer === false &&
@@ -180,7 +180,7 @@ export const onMouseDownMouseOverUtil = (state, { i, j, type }) => {
     if (mouseDown === true && wKeyPressed === true && type === "weighted") {
       gridCells[i][j].isWall = false;
       gridCells[i][j].isWeight = true;
-      gridCells[i][j].weight = 2;
+      gridCells[i][j].weight = 3;
     } else if (mouseDown === true) {
       gridCells[i][j].isWall = true;
       gridCells[i][j].isWeight = false;
