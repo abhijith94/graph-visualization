@@ -102,6 +102,17 @@ class Grid extends Component {
             );
             break;
 
+          case 5:
+            this.bidirectionalAStar(
+              gridCells,
+              playerPos,
+              targetPos,
+              markVisited,
+              markSP,
+              findPath
+            );
+            break;
+
           default:
             break;
         }
@@ -526,6 +537,175 @@ class Grid extends Component {
         }
 
         let { i, j } = cellIdPositionMap.get(headBackward.id);
+        let w =
+          Math.abs(currentBackward.i - i) + Math.abs(currentBackward.j - j);
+        if (
+          shortestDistanceForward.get(headBackward.id) &&
+          shortestDistanceBackward.get(currentBackward.id) +
+            w +
+            shortestDistanceForward.get(headBackward.id) <
+            mu
+        ) {
+          mu =
+            shortestDistanceBackward.get(currentBackward.id) +
+            w +
+            shortestDistanceForward.get(headBackward.id);
+
+          intersectingNode = headBackward.id;
+        }
+
+        headBackward = headBackward.next;
+      }
+    }
+
+    findPath();
+    this.setState({ routing: false });
+  };
+
+  bidirectionalAStar = async (
+    gridCells,
+    playerPos,
+    targetPos,
+    markVisited,
+    markSP,
+    findPath
+  ) => {
+    let { graph, cellIdPositionMap } = this.initializeGraph(gridCells);
+    let playerId = gridCells[playerPos.i][playerPos.j].id;
+    let targetId = gridCells[targetPos.i][targetPos.j].id;
+
+    let mu = Infinity;
+    let intersectingNode = null;
+    let parentForward = new Map();
+    let parentBackward = new Map();
+    let shortestDistanceForward = new Map();
+    let shortestDistanceBackward = new Map();
+
+    let pqForward = new PriorityQueue();
+    let pqBackward = new PriorityQueue();
+
+    for (let i = 0; i < gridCells.length; i++) {
+      for (let j = 0; j < gridCells[i].length; j++) {
+        if (!gridCells[i][j].isWall) {
+          pqForward.enqeue(new Node(gridCells[i][j].id, Infinity, i, j));
+          pqBackward.enqeue(new Node(gridCells[i][j].id, Infinity, i, j));
+        }
+      }
+    }
+
+    pqForward.decreaseKey(playerId, 0);
+    pqBackward.decreaseKey(targetId, 0);
+
+    while (!pqForward.isEmpty() && !pqBackward.isEmpty()) {
+      let currentForward = pqForward.dequeue();
+      let currentBackward = pqBackward.dequeue();
+
+      if (currentForward.id === playerId) {
+        shortestDistanceForward.set(playerId, 0);
+      }
+
+      if (currentBackward.id === targetId) {
+        shortestDistanceBackward.set(targetId, 0);
+      }
+
+      // mu is the true distance s-t
+      if (
+        shortestDistanceForward.get(currentForward.id) +
+          shortestDistanceBackward.get(currentBackward.id) >=
+        mu
+      ) {
+        this.drawShortestPath(
+          parentForward,
+          playerId,
+          intersectingNode,
+          cellIdPositionMap,
+          markSP,
+          true
+        );
+        this.drawShortestPath(
+          parentBackward,
+          targetId,
+          intersectingNode,
+          cellIdPositionMap,
+          markSP,
+          true
+        );
+        break;
+      }
+
+      let headForward = graph.adjList.get(currentForward.id).head; //neighbours
+
+      while (headForward !== null) {
+        let g =
+          shortestDistanceForward.get(currentForward.id) + headForward.weight;
+
+        let { i, j } = cellIdPositionMap.get(headForward.id);
+        let h = Math.abs(targetPos.i - i) + Math.abs(targetPos.j - j);
+
+        let f = g + h * 1.001;
+        if (
+          pqForward.containsKey(headForward.id) &&
+          pqForward.peek(headForward.id).weight > f
+        ) {
+          pqForward.decreaseKey(headForward.id, f);
+          parentForward.set(headForward.id, currentForward.id);
+
+          shortestDistanceForward.set(headForward.id, g);
+
+          let { i, j } = cellIdPositionMap.get(headForward.id);
+          markVisited(i, j);
+          await this.wait(this.state.animationWait);
+        }
+
+        let w = Math.abs(currentForward.i - i) + Math.abs(currentForward.j - j);
+
+        if (
+          shortestDistanceBackward.get(headForward.id) &&
+          shortestDistanceForward.get(currentForward.id) +
+            w +
+            shortestDistanceBackward.get(headForward.id) <
+            mu
+        ) {
+          let w =
+            Math.abs(currentForward.i - currentBackward.i) +
+            Math.abs(currentForward.j - currentBackward.j);
+
+          mu =
+            shortestDistanceForward.get(currentForward.id) +
+            w +
+            shortestDistanceBackward.get(headForward.id);
+
+          intersectingNode = headForward.id;
+        }
+
+        headForward = headForward.next;
+      }
+
+      let headBackward = graph.adjList.get(currentBackward.id).head; //neighbours
+
+      while (headBackward !== null) {
+        let g =
+          shortestDistanceBackward.get(currentBackward.id) +
+          headBackward.weight;
+
+        let { i, j } = cellIdPositionMap.get(headBackward.id);
+        let h = Math.abs(playerPos.i - i) + Math.abs(playerPos.j - j);
+
+        let f = g + h * 1.001;
+
+        if (
+          pqBackward.containsKey(headBackward.id) &&
+          pqBackward.peek(headBackward.id).weight > f
+        ) {
+          pqBackward.decreaseKey(headBackward.id, f);
+          parentBackward.set(headBackward.id, currentBackward.id);
+
+          shortestDistanceBackward.set(headBackward.id, g);
+
+          markVisited(i, j);
+          await this.wait(this.state.animationWait);
+        }
+
         let w =
           Math.abs(currentBackward.i - i) + Math.abs(currentBackward.j - j);
         if (
