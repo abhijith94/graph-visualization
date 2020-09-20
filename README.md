@@ -10,6 +10,8 @@ Algorithms Implemented-
 - Depth First Search
 - Dijkstra's algorithm
 - A* algorithm
+- Bidirectional Dijkstra
+- Bidirectional A*
 
 ## Screenshots
 
