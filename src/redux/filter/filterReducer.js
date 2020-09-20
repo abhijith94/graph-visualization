@@ -32,6 +32,13 @@ const INITIAL_STATE = {
       description: "A* algorithm is weighted & guarantees shortest path",
       complexity: "O(V+E)",
     },
+    {
+      id: 4,
+      type: "weighted",
+      name: "Bidirectional Dijkstra",
+      description: "Bidirectional Dijkstra is weighted & guarantees shortest path",
+      complexity: "O(V + ElogV)",
+    },
   ],
   currentAlg: 0,
 };

@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import GridCell from "../grid-cell/GridCell";
-import Graph from "../../utils/Graph";
-import Queue from "../../utils/Queue";
-import Stack from "../../utils/Stack";
-import Node from "../../utils/Node";
-import PriorityQueue from "../../utils/PriorityQueue";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import GridCell from '../grid-cell/GridCell';
+import Graph from '../../utils/Graph';
+import Queue from '../../utils/Queue';
+import Stack from '../../utils/Stack';
+import Node from '../../utils/Node';
+import PriorityQueue from '../../utils/PriorityQueue';
 import {
   markCellVisited,
   markShortestPath,
@@ -16,8 +16,8 @@ import {
   dragDrop,
   mouseDown,
   mouseOver,
-} from "../../redux/grid/gridActions";
-import "./Grid.scss";
+} from '../../redux/grid/gridActions';
+import './Grid.scss';
 
 class Grid extends Component {
   state = {
@@ -82,6 +82,17 @@ class Grid extends Component {
 
           case 3:
             this.AStar(
+              gridCells,
+              playerPos,
+              targetPos,
+              markVisited,
+              markSP,
+              findPath
+            );
+            break;
+
+          case 4:
+            this.bidirectionalDijkstra(
               gridCells,
               playerPos,
               targetPos,
@@ -374,6 +385,172 @@ class Grid extends Component {
     this.setState({ routing: false });
   };
 
+  bidirectionalDijkstra = async (
+    gridCells,
+    playerPos,
+    targetPos,
+    markVisited,
+    markSP,
+    findPath
+  ) => {
+    let { graph, cellIdPositionMap } = this.initializeGraph(gridCells);
+    let playerId = gridCells[playerPos.i][playerPos.j].id;
+    let targetId = gridCells[targetPos.i][targetPos.j].id;
+
+    let mu = Infinity;
+    let intersectingNode = null;
+    let parentForward = new Map();
+    let parentBackward = new Map();
+    let shortestDistanceForward = new Map();
+    let shortestDistanceBackward = new Map();
+
+    let pqForward = new PriorityQueue();
+    let pqBackward = new PriorityQueue();
+
+    for (let i = 0; i < gridCells.length; i++) {
+      for (let j = 0; j < gridCells[i].length; j++) {
+        if (!gridCells[i][j].isWall) {
+          pqForward.enqeue(new Node(gridCells[i][j].id, Infinity, i, j));
+          pqBackward.enqeue(new Node(gridCells[i][j].id, Infinity, i, j));
+        }
+      }
+    }
+
+    pqForward.decreaseKey(playerId, 0);
+    pqBackward.decreaseKey(targetId, 0);
+
+    while (!pqForward.isEmpty() && !pqBackward.isEmpty()) {
+      let currentForward = pqForward.dequeue();
+      let currentBackward = pqBackward.dequeue();
+
+      if (currentForward.id === playerId) {
+        shortestDistanceForward.set(playerId, 0);
+      } else {
+        shortestDistanceForward.set(currentForward.id, currentForward.weight);
+      }
+
+      if (currentBackward.id === targetId) {
+        shortestDistanceBackward.set(targetId, 0);
+      } else {
+        shortestDistanceBackward.set(
+          currentBackward.id,
+          currentBackward.weight
+        );
+      }
+
+      // mu is the true distance s-t
+      if (
+        shortestDistanceForward.get(currentForward.id) +
+          shortestDistanceBackward.get(currentBackward.id) >=
+        mu
+      ) {
+        this.drawShortestPath(
+          parentForward,
+          playerId,
+          intersectingNode,
+          cellIdPositionMap,
+          markSP,
+          true
+        );
+        this.drawShortestPath(
+          parentBackward,
+          targetId,
+          intersectingNode,
+          cellIdPositionMap,
+          markSP,
+          true
+        );
+        break;
+      }
+
+      let headForward = graph.adjList.get(currentForward.id).head; //neighbours
+
+      while (headForward !== null) {
+        let totalWeight =
+          shortestDistanceForward.get(currentForward.id) + headForward.weight;
+
+        if (
+          pqForward.containsKey(headForward.id) &&
+          pqForward.peek(headForward.id).weight > totalWeight
+        ) {
+          pqForward.decreaseKey(headForward.id, totalWeight);
+          parentForward.set(headForward.id, currentForward.id);
+
+          let { i, j } = cellIdPositionMap.get(headForward.id);
+          markVisited(i, j);
+          await this.wait(this.state.animationWait);
+        }
+
+        let { i, j } = cellIdPositionMap.get(headForward.id);
+        let w = Math.abs(currentForward.i - i) + Math.abs(currentForward.j - j);
+
+        if (
+          shortestDistanceBackward.get(headForward.id) &&
+          shortestDistanceForward.get(currentForward.id) +
+            w +
+            shortestDistanceBackward.get(headForward.id) <
+            mu
+        ) {
+          let w =
+            Math.abs(currentForward.i - currentBackward.i) +
+            Math.abs(currentForward.j - currentBackward.j);
+
+          mu =
+            shortestDistanceForward.get(currentForward.id) +
+            w +
+            shortestDistanceBackward.get(headForward.id);
+
+          intersectingNode = headForward.id;
+        }
+
+        headForward = headForward.next;
+      }
+
+      let headBackward = graph.adjList.get(currentBackward.id).head; //neighbours
+
+      while (headBackward !== null) {
+        let totalWeight =
+          shortestDistanceBackward.get(currentBackward.id) +
+          headBackward.weight;
+
+        if (
+          pqBackward.containsKey(headBackward.id) &&
+          pqBackward.peek(headBackward.id).weight > totalWeight
+        ) {
+          pqBackward.decreaseKey(headBackward.id, totalWeight);
+          parentBackward.set(headBackward.id, currentBackward.id);
+
+          let { i, j } = cellIdPositionMap.get(headBackward.id);
+          markVisited(i, j);
+          await this.wait(this.state.animationWait);
+        }
+
+        let { i, j } = cellIdPositionMap.get(headBackward.id);
+        let w =
+          Math.abs(currentBackward.i - i) + Math.abs(currentBackward.j - j);
+        if (
+          shortestDistanceForward.get(headBackward.id) &&
+          shortestDistanceBackward.get(currentBackward.id) +
+            w +
+            shortestDistanceForward.get(headBackward.id) <
+            mu
+        ) {
+          mu =
+            shortestDistanceBackward.get(currentBackward.id) +
+            w +
+            shortestDistanceForward.get(headBackward.id);
+
+          intersectingNode = headBackward.id;
+        }
+
+        headBackward = headBackward.next;
+      }
+    }
+
+    findPath();
+    this.setState({ routing: false });
+  };
+
   initializeGraph(gridCells) {
     let graph = new Graph();
     let cellIdPositionMap = new Map();
@@ -436,16 +613,32 @@ class Grid extends Component {
     playerId,
     targetId,
     cellIdPositionMap,
-    markSP
+    markSP,
+    bidirectional = false
   ) => {
-    let temp = targetId;
-    while (temp !== playerId) {
-      let parentId = parent.get(temp);
-
-      let { i, j } = cellIdPositionMap.get(parentId);
+    if (bidirectional) {
+      let temp = targetId;
+      let { i, j } = cellIdPositionMap.get(temp);
       markSP(i, j);
-      await this.wait(this.state.animationWait);
-      temp = parentId;
+
+      while (temp !== playerId) {
+        let parentId = parent.get(temp);
+
+        let { i, j } = cellIdPositionMap.get(parentId);
+        markSP(i, j);
+        await this.wait(this.state.animationWait);
+        temp = parentId;
+      }
+    } else {
+      let temp = targetId;
+      while (temp !== playerId) {
+        let parentId = parent.get(temp);
+
+        let { i, j } = cellIdPositionMap.get(parentId);
+        markSP(i, j);
+        await this.wait(this.state.animationWait);
+        temp = parentId;
+      }
     }
   };
 
@@ -457,7 +650,7 @@ class Grid extends Component {
 
   handleKeyPress = (wKeyPressed) => {
     document.onkeydown = (e) => {
-      if (e.key === "w" || e.key === "W") {
+      if (e.key === 'w' || e.key === 'W') {
         wKeyPressed(true);
       }
     };
