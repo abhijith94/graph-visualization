@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { chooseAlg } from "../../redux/filter/filterActions";
-import { findPath, resetVisitedAndSP } from "../../redux/grid/gridActions";
-import "./Filter.scss";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { chooseAlg } from '../../redux/filter/filterActions';
+import { findPath, resetVisitedAndSP } from '../../redux/grid/gridActions';
+import './Filter.scss';
 
 export class Filter extends Component {
   render() {
@@ -31,11 +31,15 @@ export class Filter extends Component {
           ))}
         </select>
         <p className="alg-info">
-          Complexity:
-          <span className="complexity">
-            {algorithms[currentAlg].complexity}
-          </span>{" "}
-          <br />
+          {algorithms[currentAlg].complexity ? (
+            <React.Fragment>
+              Complexity:
+              <span className="complexity">
+                {algorithms[currentAlg].complexity}
+              </span>{' '}
+              <br />
+            </React.Fragment>
+          ) : null}
           {algorithms[currentAlg].description}
         </p>
         <button

@@ -23,14 +23,13 @@ const INITIAL_STATE = {
       type: 'weighted',
       name: "Dijkstra's Algorithm",
       description: 'Dijkstra algorithm is weighted & guarantees shortest path',
-      complexity: 'O(V + ElogV)',
+      complexity: 'O(E + VlogV)',
     },
     {
       id: 3,
       type: 'weighted',
       name: 'A* Algorithm',
-      description: 'A* algorithm is weighted & guarantees shortest path',
-      complexity: 'O(V+E)',
+      description: 'A* algorithm uses heuristics to find the shortest path',
     },
     {
       id: 4,
@@ -38,14 +37,13 @@ const INITIAL_STATE = {
       name: 'Bidirectional Dijkstra',
       description:
         'Bidirectional Dijkstra is weighted & guarantees shortest path',
-      complexity: 'O(V + ElogV)',
+      complexity: 'O(E + VlogV)',
     },
     {
       id: 5,
       type: 'weighted',
       name: 'Bidirectional A*',
-      description: 'Bidirectional A* is weighted & guarantees shortest path',
-      complexity: 'O(V+E)',
+      description: 'Bidirectional A* uses heuristics to find the shortest path',
     },
   ],
   currentAlg: 0,
