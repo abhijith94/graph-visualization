@@ -1,4 +1,4 @@
-# Pathfinding Visualizer
+# Pathfinding Visualizer made with React
 
 ## Demo
 
